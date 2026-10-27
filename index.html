@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sub-20 5K Daily Training Plan & Route Visualizer | Siddhant Baral</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <!-- Chart.js for Elevation Profile -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0b0f19;
+      color: #f3f4f6;
+    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #111827; }
+    ::-webkit-scrollbar-thumb { background: #374151; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+
+    .glass-card {
+      background: rgba(17, 24, 39, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    #map {
+      height: 440px;
+      width: 100%;
+      border-radius: 0.75rem;
+      z-index: 1;
+    }
+
+    .today-card-active {
+      border: 2px solid #f59e0b !important;
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-12">
+
+  <!-- Header Banner -->
+  <header class="border-b border-gray-800 bg-gray-900/80 sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="bg-gradient-to-tr from-amber-500 to-red-600 p-2 rounded-xl shadow-lg shadow-amber-500/20">
+          <i data-lucide="activity" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+            Sub-20 5K Daily Plan
+            <span class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">VDOT 43 → 45</span>
+          </h1>
+          <p class="text-xs text-gray-400">Athlete: <span class="text-gray-200 font-medium">Siddhant Baral</span> | Oct 27, 2026 – Jan 24, 2027</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <div class="glass-card px-3 py-1.5 rounded-lg border flex items-center gap-2">
+          <i data-lucide="target" class="w-4 h-4 text-emerald-400"></i>
+          <div>
+            <span class="text-gray-400 block text-[9px] uppercase tracking-wider">Target 5K</span>
+            <span class="font-mono font-bold text-emerald-400">21:49 (4:22/km)</span>
+          </div>
+        </div>
+        <div class="glass-card px-3 py-1.5 rounded-lg border flex items-center gap-2">
+          <i data-lucide="flag" class="w-4 h-4 text-amber-400"></i>
+          <div>
+            <span class="text-gray-400 block text-[9px] uppercase tracking-wider">Time Trial</span>
+            <span class="font-mono font-bold text-amber-400">Sat, Jan 23</span>
+          </div>
+        </div>
+        <div id="gatekeeperBadge" class="glass-card px-3 py-1.5 rounded-lg border flex items-center gap-2">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+          <div>
+            <span class="text-gray-400 block text-[9px] uppercase tracking-wider">Start Gate</span>
+            <span class="font-mono font-bold text-emerald-400">RHR PASS (≤52)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 space-y-6">
+
+    <!-- PRE-DAWN MOBILE "TODAY" VIEW BANNER -->
+    <section id="todayBanner" class="glass-card p-5 rounded-2xl border-2 border-amber-500/40 bg-gradient-to-r from-amber-950/30 via-gray-900 to-gray-900 space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-800 pb-3">
+        <div class="flex items-center space-x-2">
+          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
+          </span>
+          <h2 class="text-base font-bold text-amber-400 tracking-wide uppercase">Today's Pre-Dawn Session</h2>
+          <span id="todayDateLabel" class="text-xs font-mono text-gray-400"></span>
+        </div>
+        <div class="flex items-center space-x-3 text-xs font-mono">
+          <span class="text-gray-400">Planned: <strong id="todayPlannedKm" class="text-amber-400 text-sm">7 km</strong></span>
+          <span class="text-gray-400">Logged: <strong id="todayLoggedKm" class="text-emerald-400 text-sm">0 km</strong></span>
+        </div>
+      </div>
+
+      <!-- Workout Breakdown Cards -->
+      <div id="todayWorkoutDetails" class="grid grid-cols-1 md:grid-cols-4 gap-3">
+        <div class="bg-gray-900/90 p-3 rounded-xl border border-gray-800">
+          <span class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider block">Warm-Up</span>
+          <span id="todayWarmup" class="text-sm font-medium text-gray-200">Dynamic Mobility & Drills</span>
+        </div>
+        <div class="bg-gray-900/90 p-3 rounded-xl border border-amber-500/30 md:col-span-2">
+          <span class="text-[10px] font-semibold text-amber-400 uppercase tracking-wider block">Main Set</span>
+          <span id="todayMainSet" class="text-base font-bold text-white">7 km Easy Run (Zone 2)</span>
+        </div>
+        <div class="bg-gray-900/90 p-3 rounded-xl border border-gray-800">
+          <span class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider block">Pace & HR Cap</span>
+          <span id="todayPaceCap" class="text-sm font-mono text-emerald-400 font-bold">6:00-6:30/km | HR ≤ 150</span>
+        </div>
+      </div>
+
+      <!-- Live Log Bar -->
+      <div class="bg-gray-950/80 p-3 rounded-xl border border-gray-800/80 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-3 text-xs">
+          <label class="flex items-center space-x-2 cursor-pointer">
+            <input type="checkbox" id="todayDoneCheck" onchange="updateTodayLog()" class="w-4 h-4 rounded border-gray-700 text-amber-500 focus:ring-amber-500">
+            <span class="font-bold text-white">Mark Completed</span>
+          </label>
+          <div class="flex items-center space-x-1">
+            <span class="text-gray-400">Actual km:</span>
+            <input type="number" id="todayActualKmInput" onchange="updateTodayLog()" step="0.1" class="w-16 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs text-white text-center font-mono focus:border-amber-500">
+          </div>
+          <div class="flex items-center space-x-1">
+            <span class="text-gray-400">RHR:</span>
+            <input type="number" id="todayRhrInput" onchange="updateTodayLog()" placeholder="bpm" class="w-14 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs text-white text-center font-mono focus:border-amber-500">
+          </div>
+          <div class="flex items-center space-x-1">
+            <span class="text-gray-400">Sleep:</span>
+            <input type="number" id="todaySleepInput" onchange="updateTodayLog()" placeholder="hrs" step="0.5" class="w-14 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs text-white text-center font-mono focus:border-amber-500">
+          </div>
+        </div>
+        <div id="todayStatusAlert" class="text-xs font-mono font-medium text-amber-400">
+          Ready for pre-dawn execution.
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <div class="flex overflow-x-auto space-x-2 border-b border-gray-800 pb-2">
+      <button onclick="switchTab('schedule')" id="tab-schedule" class="px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 bg-amber-500/10 text-amber-400 border border-amber-500/30">
+        <i data-lucide="calendar" class="w-4 h-4"></i> Daily Schedule & Workouts
+      </button>
+      <button onclick="switchTab('hills')" id="tab-hills" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white transition flex items-center gap-2">
+        <i data-lucide="map-pin" class="w-4 h-4"></i> KML Hill Visualizer (TU 1 & 2)
+      </button>
+      <button onclick="switchTab('paces')" id="tab-paces" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white transition flex items-center gap-2">
+        <i data-lucide="gauge" class="w-4 h-4"></i> Training Zones & Paces
+      </button>
+      <button onclick="switchTab('strength')" id="tab-strength" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white transition flex items-center gap-2">
+        <i data-lucide="dumbbell" class="w-4 h-4"></i> Strength Routine
+      </button>
+      <button onclick="switchTab('rules')" id="tab-rules" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-400 hover:text-white transition flex items-center gap-2">
+        <i data-lucide="shield" class="w-4 h-4"></i> Core Rules & Protocols
+      </button>
+    </div>
+
+    <!-- TAB 1: SCHEDULE -->
+    <section id="content-schedule" class="space-y-6">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 glass-card p-4 rounded-xl">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="text-xs font-semibold text-gray-400 uppercase">Filter Block:</span>
+          <button onclick="filterBlock('all')" id="btn-block-all" class="px-3 py-1 text-xs rounded-md bg-amber-500 text-gray-950 font-bold">All Weeks</button>
+          <button onclick="filterBlock('0')" id="btn-block-0" class="px-3 py-1 text-xs rounded-md bg-gray-800 text-gray-300 hover:bg-gray-700">Week 0 (Live)</button>
+          <button onclick="filterBlock('A')" id="btn-block-A" class="px-3 py-1 text-xs rounded-md bg-gray-800 text-gray-300 hover:bg-gray-700">Block A (Base)</button>
+          <button onclick="filterBlock('B')" id="btn-block-B" class="px-3 py-1 text-xs rounded-md bg-gray-800 text-gray-300 hover:bg-gray-700">Block B (Threshold & Reps)</button>
+        </div>
+
+        <div class="relative w-full sm:w-64">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-gray-500"></i>
+          <input type="text" id="searchInput" oninput="renderSchedule()" placeholder="Search workouts or days..." class="w-full bg-gray-900 border border-gray-700 rounded-lg pl-9 pr-4 py-1.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500">
+        </div>
+      </div>
+
+      <div id="scheduleContainer" class="space-y-6"></div>
+    </section>
+
+    <!-- TAB 2: KML HILL VISUALIZER -->
+    <section id="content-hills" class="hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div class="lg:col-span-2 glass-card p-4 rounded-xl space-y-4 border border-gray-800">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="map" class="w-5 h-5 text-amber-400"></i>
+                TU Hills Satellite KML Route Viewer
+              </h2>
+              <p class="text-xs text-gray-400">Integrated from TU_hill1.kml & TU_hill2.kml (Tribhuvan University Campus)</p>
+            </div>
+            
+            <div class="flex items-center gap-2">
+              <button onclick="selectRoute('hill1')" id="btn-hill1" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-red-500/20 text-red-400 border border-red-500/40">Hill 1 (1.47km)</button>
+              <button onclick="selectRoute('hill2')" id="btn-hill2" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/40">Hill 2 (1.15km)</button>
+              <button onclick="selectRoute('both')" id="btn-both" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-500 text-gray-950 font-bold">Both Hills</button>
+            </div>
+          </div>
+
+          <div id="map"></div>
+
+          <div class="pt-2">
+            <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Elevation Profile (vs Distance in Meters)</h3>
+            <div class="h-44 w-full">
+              <canvas id="elevationChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div class="glass-card p-5 rounded-xl border border-red-500/20 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-red-400">Hill 1 (TU_hill1)</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-red-500/20 text-red-300 border border-red-500/30">Hill Sprints Pitch</span>
+            </div>
+            <div class="text-sm font-semibold text-white">Length: 1,474 m | Climb: +47 m (3.2% avg)</div>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              <strong>Hill Sprint Pitch Section:</strong> 667m to 824m mark (+15m in 157m, <span class="text-amber-400 font-bold">9.6% gradient</span>). Shown as Amber Polyline.
+            </p>
+            <div class="bg-gray-900/80 p-3 rounded-lg border border-gray-800 text-xs text-gray-400 space-y-1">
+              <p><strong class="text-gray-200">Execution:</strong> Warm up 3 km, then 8–10s all-out sprint, walk back down. ≥90s rest between reps.</p>
+            </div>
+          </div>
+
+          <div class="glass-card p-5 rounded-xl border border-blue-500/20 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-blue-400">Hill 2 (TU_hill2)</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-500/20 text-blue-300 border border-blue-500/30">VO2 Reps (Block C)</span>
+            </div>
+            <div class="text-sm font-semibold text-white">Length: 1,146 m | Climb: +55 m (4.8% avg)</div>
+            <p class="text-xs text-gray-300 leading-relaxed">
+              <strong>VO2 Rep Section:</strong> 527m to 1,105m (+28m in 578m, 4.8% grade).
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: PACES & ZONES -->
+    <section id="content-paces" class="hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass-card p-5 rounded-xl space-y-4">
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="heart-pulse" class="w-5 h-5 text-red-400"></i>
+            Garmin Heart Rate Zones
+          </h2>
+          <div class="space-y-2 text-xs">
+            <div class="flex justify-between p-2.5 rounded bg-blue-950/40 border border-blue-800/40">
+              <span class="font-bold text-blue-300">Zone 1 (Easy / Recovery)</span>
+              <span class="font-mono text-gray-200">128 – 142 bpm</span>
+            </div>
+            <div class="flex justify-between p-2.5 rounded bg-emerald-950/40 border border-emerald-800/40">
+              <span class="font-bold text-emerald-300">Zone 2 (Aerobic Base)</span>
+              <span class="font-mono text-gray-200">142 – 156 bpm</span>
+            </div>
+            <div class="flex justify-between p-2.5 rounded bg-amber-950/40 border border-amber-800/40">
+              <span class="font-bold text-amber-300">Zone 3 (Tempo / Sub-Threshold)</span>
+              <span class="font-mono text-gray-200">156 – 173 bpm</span>
+            </div>
+            <div class="flex justify-between p-2.5 rounded bg-orange-950/40 border border-orange-800/40">
+              <span class="font-bold text-orange-300">Zone 4 (Threshold)</span>
+              <span class="font-mono text-gray-200">173 – 189 bpm</span>
+            </div>
+            <div class="flex justify-between p-2.5 rounded bg-red-950/40 border border-red-800/40">
+              <span class="font-bold text-red-300">Zone 5 (Repetition / All-Out)</span>
+              <span class="font-mono text-gray-200">189 – 203 bpm</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl space-y-4">
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="timer" class="w-5 h-5 text-amber-400"></i>
+            Training Pace Targets (VDOT 43 Baseline)
+          </h2>
+          <div class="space-y-2 text-xs">
+            <div class="p-2.5 rounded bg-gray-900 border border-gray-800 flex justify-between items-center">
+              <div>
+                <span class="font-bold text-emerald-400 block">Easy (E)</span>
+                <span class="text-gray-400 text-[11px]">HR ≤ 150 (max 156). >22°C: hold 6:15+</span>
+              </div>
+              <span class="font-mono font-bold text-gray-200 text-sm">6:00 – 6:30 /km</span>
+            </div>
+            <div class="p-2.5 rounded bg-gray-900 border border-gray-800 flex justify-between items-center">
+              <div>
+                <span class="font-bold text-blue-400 block">Sub-Threshold (T-10)</span>
+                <span class="text-gray-400 text-[11px]">Effort 6/10. Able to do more.</span>
+              </div>
+              <span class="font-mono font-bold text-gray-200 text-sm">4:58 /km</span>
+            </div>
+            <div class="p-2.5 rounded bg-gray-900 border border-gray-800 flex justify-between items-center">
+              <div>
+                <span class="font-bold text-amber-400 block">Threshold (T)</span>
+                <span class="text-gray-400 text-[11px]">Effort 7/10. Short phrases. HR 175-185 avg</span>
+              </div>
+              <span class="font-mono font-bold text-gray-200 text-sm">4:48 /km</span>
+            </div>
+            <div class="p-2.5 rounded bg-gray-900 border border-gray-800 flex justify-between items-center">
+              <div>
+                <span class="font-bold text-purple-400 block">Repetition (R)</span>
+                <span class="text-gray-400 text-[11px]">400m reps in 1:35–1:39. Never &lt;1:34</span>
+              </div>
+              <span class="font-mono font-bold text-gray-200 text-sm">4:00 – 4:10 /km</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: STRENGTH -->
+    <section id="content-strength" class="hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass-card p-5 rounded-xl border border-blue-500/20 space-y-4">
+          <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="dumbbell" class="w-5 h-5 text-blue-400"></i>
+              Block A Strength (Nov 2 – Dec 13)
+            </h2>
+            <span class="px-2.5 py-1 rounded text-xs font-mono bg-blue-500/10 text-blue-400">2–3 sets × 10–12 reps</span>
+          </div>
+
+          <div class="space-y-4 text-xs">
+            <div>
+              <h3 class="font-bold text-amber-400 mb-1">Session A (Mondays)</h3>
+              <ul class="list-disc list-inside text-gray-300 space-y-1">
+                <li>Backpack squat held at chest (10–15 kg)</li>
+                <li>Single-leg RDL (bodyweight first)</li>
+                <li>Split squat & Side plank</li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="font-bold text-amber-400 mb-1">Session B (Thursdays)</h3>
+              <ul class="list-disc list-inside text-gray-300 space-y-1">
+                <li>Step-up onto stair/chair at knee height</li>
+                <li>Hip thrust with backpack on hips</li>
+                <li>Copenhagen plank with chair</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="glass-card p-5 rounded-xl border border-amber-500/20 space-y-4">
+          <div class="flex items-center justify-between border-b border-gray-800 pb-3">
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="zap" class="w-5 h-5 text-amber-400"></i>
+              Block B Strength (Dec 14 – Jan 24)
+            </h2>
+            <span class="px-2.5 py-1 rounded text-xs font-mono bg-amber-500/10 text-amber-400">3–4 sets × 6–8 reps</span>
+          </div>
+          <p class="text-xs text-gray-300">Bulgarian split squats, single-leg calf raises, and Pogo hops (Dec 21+).</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: CORE RULES -->
+    <section id="content-rules" class="hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="glass-card p-5 rounded-xl border border-red-500/30 space-y-4">
+          <h2 class="text-base font-bold text-red-400 flex items-center gap-2">
+            <i data-lucide="shield-alert" class="w-5 h-5 text-red-400"></i>
+            Gatekeeper & Emergency Rules
+          </h2>
+          <ul class="space-y-3 text-xs text-gray-300">
+            <li class="p-3 bg-red-950/20 rounded-lg border border-red-900/40">
+              <strong class="text-white block mb-1">1. Start Gate:</strong> RHR ≤ 52 on 3 consecutive mornings before entering main Block A quality work.
+            </li>
+            <li class="p-3 bg-gray-900 rounded-lg border border-gray-800">
+              <strong class="text-amber-400 block mb-1">2. Over-distance Cap:</strong> Any day > +1 km planned turns RED. Any week > +2 km total turns RED.
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const KML_HILL1_COORDS = [
+      [27.6788349, 85.2971435, 1292], [27.6790856, 85.2962852, 1295],
+      [27.6793610, 85.2955395, 1295], [27.6796365, 85.2947938, 1297],
+      [27.6797411, 85.2945310, 1298], [27.6797792, 85.2942681, 1299],
+      [27.6797697, 85.2939409, 1300], [27.6798172, 85.2934849, 1302],
+      [27.6798220, 85.2929646, 1302], [27.6797887, 85.2924871, 1302],
+      [27.6796463, 85.2919883, 1303], [27.6794705, 85.2913713, 1306],
+      [27.6792995, 85.2906579, 1309], [27.6791237, 85.2898908, 1315],
+      [27.6789337, 85.2891129, 1324], [27.6787817, 85.2883029, 1323],
+      [27.6786819, 85.2874929, 1327], [27.6786059, 85.2866077, 1330],
+      [27.6785299, 85.2857226, 1333], [27.6784871, 85.2851540, 1335],
+      [27.6783541, 85.2849609, 1337], [27.6781072, 85.2847087, 1337],
+      [27.6777320, 85.2844512, 1338], [27.6772902, 85.2841347, 1339],
+      [27.6769956, 85.2839148, 1339], [27.6766868, 85.2835661, 1339]
+    ];
+
+    const KML_HILL2_COORDS = [
+      [27.6761514, 85.2938282, 1284], [27.6764860, 85.2935922, 1286],
+      [27.6766667, 85.2932918, 1288], [27.6767333, 85.2929592, 1289],
+      [27.6767428, 85.2925837, 1290], [27.6767618, 85.2921760, 1292],
+      [27.6767523, 85.2919292, 1294], [27.6766479, 85.2916718, 1294],
+      [27.6764959, 85.2915215, 1295], [27.6762964, 85.2913713, 1296],
+      [27.6760304, 85.2911997, 1297], [27.6758118, 85.2910388, 1297],
+      [27.6757167, 85.2909315, 1298], [27.6755458, 85.2906311, 1301],
+      [27.6753368, 85.2903843, 1303], [27.6752796, 85.2901161, 1306],
+      [27.6752606, 85.2899444, 1307], [27.6753366, 85.2895045, 1310],
+      [27.6755170, 85.2887964, 1313], [27.6756216, 85.2881527, 1314],
+      [27.6757261, 85.2874982, 1319], [27.6758306, 85.2868438, 1323],
+      [27.6758971, 85.2861893, 1325], [27.6758877, 85.2855670, 1328],
+      [27.6758877, 85.2849340, 1333], [27.6760491, 85.2844191, 1335],
+      [27.6764385, 85.2838826, 1338], [27.6766666, 85.2835608, 1339]
+    ];
+
+    const scheduleData = [
+      {
+        block: '0', weekNum: 0, dates: 'Oct 27 – Nov 1 (Live Week)', totalKm: 42, longKm: 8, longPct: '19%', tWork: 'None', rWork: '5K Race',
+        days: [
+          { dateId: '2026-10-27', day: 'Tue Oct 27', type: 'Easy', title: 'Easy Run', km: 7, warmup: 'Dynamic Stretch', mainSet: '7 km Easy Run', cooldown: 'Walk 500m', pace: '6:00-6:30/km', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-10-28', day: 'Wed Oct 28', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Dynamic Stretch', mainSet: '8 km Easy Run', cooldown: 'Walk 500m', pace: '6:00-6:30/km', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-10-29', day: 'Thu Oct 29', type: 'Rest', title: 'Rest Day', km: 0, warmup: 'None', mainSet: 'Full Recovery', cooldown: 'None', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-10-30', day: 'Fri Oct 30', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Dynamic Stretch', mainSet: '8 km Easy Run', cooldown: 'Walk 500m', pace: '6:00-6:30/km', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-10-31', day: 'Sat Oct 31', type: 'Quality', title: 'Team 5K Race', km: 9, warmup: 'WU 2 km', mainSet: '5K Race (Untimed effort)', cooldown: 'CD 2 km', pace: 'Race Pace', hrCap: 'Zone 4-5' },
+          { dateId: '2026-11-01', day: 'Sun Nov 1', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Dynamic Stretch', mainSet: '8 km Easy Recovery Run', cooldown: 'Walk 500m', pace: '6:15-6:45/km', hrCap: 'HR ≤ 145' }
+        ]
+      },
+      {
+        block: 'A', weekNum: 1, dates: 'Nov 2 – Nov 8', totalKm: 40, longKm: 10, longPct: '25%', tWork: 'None', rWork: 'None',
+        days: [
+          { dateId: '2026-11-02', day: 'Mon Nov 2', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-11-03', day: 'Tue Nov 3', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'WU 1k', mainSet: 'E 6k + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-04', day: 'Wed Nov 4', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-05', day: 'Thu Nov 5', type: 'Easy', title: 'E 6 + Strength B', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run + Strength B', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-06', day: 'Fri Nov 6', type: 'Easy', title: 'Easy Run', km: 5, warmup: 'Mobility', mainSet: '5 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-07', day: 'Sat Nov 7', type: 'Easy', title: 'E 6 + Strides', km: 6, warmup: 'Mobility', mainSet: '6 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-08', day: 'Sun Nov 8', type: 'Long', title: 'Long Run', km: 10, warmup: 'WU 1k', mainSet: '10 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+        ]
+      },
+      {
+        block: 'A', weekNum: 2, dates: 'Nov 9 – Nov 15', totalKm: 44, longKm: 11, longPct: '25%', tWork: 'None', rWork: 'None',
+        days: [
+          { dateId: '2026-11-09', day: 'Mon Nov 9', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-11-10', day: 'Tue Nov 10', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'WU 1k', mainSet: 'E 7k + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-11', day: 'Wed Nov 11', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-12', day: 'Thu Nov 12', type: 'Easy', title: 'E 7 + Strength B', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run + Strength B', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-13', day: 'Fri Nov 13', type: 'Easy', title: 'Easy Run', km: 5, warmup: 'Mobility', mainSet: '5 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-14', day: 'Sat Nov 14', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'Mobility', mainSet: '7 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-15', day: 'Sun Nov 15', type: 'Long', title: 'Long Run', km: 11, warmup: 'WU 1k', mainSet: '11 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+        ]
+      },
+      {
+        block: 'A', weekNum: 3, dates: 'Nov 16 – Nov 22', totalKm: 48, longKm: 12, longPct: '25%', tWork: '18 min at T-10', rWork: 'None',
+        days: [
+          { dateId: '2026-11-16', day: 'Mon Nov 16', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-11-17', day: 'Tue Nov 17', type: 'Quality', title: 'T-10 Threshold', km: 8, warmup: 'WU 2k', mainSet: '3×6 min @ T-10 (4:58/km) w/ 90s jog', cooldown: 'CD 2k', pace: '4:58/km', hrCap: 'Zone 3' },
+          { dateId: '2026-11-18', day: 'Wed Nov 18', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'Mobility', mainSet: '7 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-19', day: 'Thu Nov 19', type: 'Quality', title: 'Hill Sprints', km: 7, warmup: 'WU 3k', mainSet: '4× Hill Sprints (Hill 1 9.6% Pitch) w/ 90s walk rest', cooldown: 'CD 3k', pace: 'All-out 8-10s', hrCap: 'Max Effort' },
+          { dateId: '2026-11-20', day: 'Fri Nov 20', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-21', day: 'Sat Nov 21', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-22', day: 'Sun Nov 22', type: 'Long', title: 'Long Run', km: 12, warmup: 'WU 1k', mainSet: '12 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+        ]
+      },
+      {
+        block: 'A', weekNum: 4, dates: 'Nov 23 – Nov 29 (Down Week)', totalKm: 40, longKm: 10, longPct: '25%', tWork: 'None', rWork: 'None',
+        days: [
+          { dateId: '2026-11-23', day: 'Mon Nov 23', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A (2 sets)', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-11-24', day: 'Tue Nov 24', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'WU 1k', mainSet: '6 km Easy + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-25', day: 'Wed Nov 25', type: 'Easy', title: 'Easy Run', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-26', day: 'Thu Nov 26', type: 'Quality', title: 'Hill Sprints', km: 6, warmup: 'WU 2.5k', mainSet: '4× Hill Sprints + Strength B (2 sets)', cooldown: 'CD 2.5k', pace: 'All-out', hrCap: 'Max Effort' },
+          { dateId: '2026-11-27', day: 'Fri Nov 27', type: 'Easy', title: 'Easy Run', km: 5, warmup: 'Mobility', mainSet: '5 km Easy Recovery Run', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' },
+          { dateId: '2026-11-28', day: 'Sat Nov 28', type: 'Easy', title: 'E 5 + Strides', km: 5, warmup: 'Mobility', mainSet: '5 km Easy + 4×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-11-29', day: 'Sun Nov 29', type: 'Long', title: 'Long Run', km: 10, warmup: 'WU 1k', mainSet: '10 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+        ]
+      },
+      {
+        block: 'A', weekNum: 5, dates: 'Nov 30 – Dec 6', totalKm: 52, longKm: 13, longPct: '25%', tWork: '24 min at T-10', rWork: 'None',
+        days: [
+          { dateId: '2026-11-30', day: 'Mon Nov 30', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-12-01', day: 'Tue Dec 1', type: 'Quality', title: 'T-10 Threshold', km: 9, warmup: 'WU 2k', mainSet: '3×8 min @ T-10 (4:58/km) w/ 90s jog', cooldown: 'CD 2k', pace: '4:58/km', hrCap: 'Zone 3' },
+          { dateId: '2026-12-02', day: 'Wed Dec 2', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-03', day: 'Thu Dec 3', type: 'Quality', title: 'Hill Sprints', km: 7, warmup: 'WU 3k', mainSet: '5× Hill Sprints + Strength B', cooldown: 'CD 3k', pace: 'All-out', hrCap: 'Max Effort' },
+          { dateId: '2026-12-04', day: 'Fri Dec 4', type: 'Easy', title: 'Easy Run', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-05', day: 'Sat Dec 5', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'Mobility', mainSet: '7 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-06', day: 'Sun Dec 6', type: 'Long', title: 'Long Run', km: 13, warmup: 'WU 1k', mainSet: '13 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+        ]
+      },
+      {
+        block: 'A', weekNum: 6, dates: 'Dec 7 – Dec 13 (Test Week)', totalKm: 52, longKm: 12, longPct: '23%', tWork: '30-min Test', rWork: 'None',
+        days: [
+          { dateId: '2026-12-07', day: 'Mon Dec 7', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-12-08', day: 'Tue Dec 8', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'WU 1k', mainSet: '7 km Easy + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-09', day: 'Wed Dec 9', type: 'Long', title: 'Shifted Long Run', km: 12, warmup: 'WU 1k', mainSet: '12 km Long Run (Shifted for Test recovery)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-10', day: 'Thu Dec 10', type: 'Easy', title: 'E 7 + Light Strength', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run + Light Strength B', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-11', day: 'Fri Dec 11', type: 'Easy', title: 'Shakeout Run', km: 5, warmup: 'Mobility', mainSet: '5 km Easy Recovery Run', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' },
+          { dateId: '2026-12-12', day: 'Sat Dec 12', type: 'Test', title: '🔥 30-MIN TEST', km: 12, warmup: 'WU 3k + Strides', mainSet: '30:00 MAX EVEN EFFORT TEST', cooldown: 'CD 2.5k', pace: 'Max Even Pace', hrCap: 'Zone 4-5' },
+          { dateId: '2026-12-13', day: 'Sun Dec 13', type: 'Easy', title: 'Recovery Run', km: 8, warmup: 'Mobility', mainSet: '8 km Very Easy Recovery', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' }
+        ]
+      },
+      {
+        block: 'B', weekNum: 7, dates: 'Dec 14 – Dec 20', totalKm: 58, longKm: 14, longPct: '24%', tWork: '24 min T', rWork: '2.4 km R',
+        days: [
+          { dateId: '2026-12-14', day: 'Mon Dec 14', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A (Block B Heavy)', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-12-15', day: 'Tue Dec 15', type: 'Quality', title: 'Threshold (T)', km: 9.5, warmup: 'WU 2k', mainSet: '4×6 min @ T (4:48/km) w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4 (175-185)' },
+          { dateId: '2026-12-16', day: 'Wed Dec 16', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-17', day: 'Thu Dec 17', type: 'Quality', title: 'Repetition (R)', km: 9, warmup: 'WU 2.5k', mainSet: '6×400m @ R (1:35-1:39) w/ 400m jog + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
+          { dateId: '2026-12-18', day: 'Fri Dec 18', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-19', day: 'Sat Dec 19', type: 'Easy', title: 'E 8 + Hill Sprints', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-20', day: 'Sun Dec 20', type: 'Long', title: 'Long Run', km: 14, warmup: 'WU 1k', mainSet: '14 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+        ]
+      },
+      {
+        block: 'B', weekNum: 8, dates: 'Dec 21 – Dec 27', totalKm: 60, longKm: 15, longPct: '25%', tWork: '28 min T', rWork: '2.8 km R',
+        days: [
+          { dateId: '2026-12-21', day: 'Mon Dec 21', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength A (+ Pogo Hops 2x15)', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-12-22', day: 'Tue Dec 22', type: 'Quality', title: 'Threshold (T)', km: 10, warmup: 'WU 2k', mainSet: '4×7 min @ T (4:48/km) w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4' },
+          { dateId: '2026-12-23', day: 'Wed Dec 23', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-24', day: 'Thu Dec 24', type: 'Quality', title: 'Repetition (R)', km: 10, warmup: 'WU 2.5k', mainSet: '7×400m @ R (1:35-1:39) w/ 400m jog + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
+          { dateId: '2026-12-25', day: 'Fri Dec 25', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-26', day: 'Sat Dec 26', type: 'Easy', title: 'E 8 + Hill Sprints', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-27', day: 'Sun Dec 27', type: 'Long', title: 'Long Run', km: 15, warmup: 'WU 1k', mainSet: '15 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+        ]
+      },
+      {
+        block: 'B', weekNum: 9, dates: 'Dec 28 – Jan 3 (Down Week)', totalKm: 48, longKm: 12, longPct: '25%', tWork: '18 min T', rWork: '2.0 km R',
+        days: [
+          { dateId: '2026-12-28', day: 'Mon Dec 28', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A (2 sets)', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-12-29', day: 'Tue Dec 29', type: 'Quality', title: 'Threshold (T)', km: 8, warmup: 'WU 2k', mainSet: '3×6 min @ T w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4' },
+          { dateId: '2026-12-30', day: 'Wed Dec 30', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2026-12-31', day: 'Thu Dec 31', type: 'Quality', title: 'Repetition (R)', km: 8, warmup: 'WU 2.5k', mainSet: '5×400m @ R w/ 400m jog + Strength B (2 sets)', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
+          { dateId: '2027-01-01', day: 'Fri Jan 1', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Recovery Run', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' },
+          { dateId: '2027-01-02', day: 'Sat Jan 2', type: 'Easy', title: 'E 6 + Hill Sprints', km: 6, warmup: 'Mobility', mainSet: '6 km Easy + 4× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2027-01-03', day: 'Sun Jan 3', type: 'Long', title: 'Long Run', km: 12, warmup: 'WU 1k', mainSet: '12 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+        ]
+      },
+      {
+        block: 'B', weekNum: 10, dates: 'Jan 4 – Jan 10', totalKm: 60, longKm: 15, longPct: '25%', tWork: '27 min T', rWork: '2.8 km R',
+        days: [
+          { dateId: '2027-01-04', day: 'Mon Jan 4', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2027-01-05', day: 'Tue Jan 5', type: 'Quality', title: 'Threshold (T)', km: 10, warmup: 'WU 2k', mainSet: '3×9 min @ T w/ 75s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4' },
+          { dateId: '2027-01-06', day: 'Wed Jan 6', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2027-01-07', day: 'Thu Jan 7', type: 'Quality', title: 'Repetition (R)', km: 10, warmup: 'WU 2.5k', mainSet: '7×400m @ R w/ 400m jog + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
+          { dateId: '2027-01-08', day: 'Fri Jan 8', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2027-01-09', day: 'Sat Jan 9', type: 'Easy', title: 'E 8 + Hill Sprints', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2027-01-10', day: 'Sun Jan 10', type: 'Long', title: 'Long Run', km: 15, warmup: 'WU 1k', mainSet: '15 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+        ]
+      },
+      {
+        block: 'B', weekNum: 11, dates: 'Jan 11 – Jan 17', totalKm: 62, longKm: 15, longPct: '24%', tWork: '28 min T', rWork: '3.0 km R',
+        days: [
+          { dateId: '2027-01-11', day: 'Mon Jan 11', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2027-01-12', day: 'Tue Jan 12', type: 'Quality', title: 'Threshold (T)', km: 10, warmup: 'WU 2k', mainSet: '2×14 min @ T w/ 90s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4' },
+          { dateId: '2027-01-13', day: 'Wed Jan 13', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2027-01-14', day: 'Thu Jan 14', type: 'Quality', title: 'Repetition (R)', km: 10, warmup: 'WU 2.5k', mainSet: '6×400m @ R + 3×200m @ R + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
+          { dateId: '2027-01-15', day: 'Fri Jan 15', type: 'Easy', title: 'Easy Run', km: 9, warmup: 'Mobility', mainSet: '9 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2027-01-16', day: 'Sat Jan 16', type: 'Easy', title: 'E 9 + Hill Sprints', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 4× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2027-01-17', day: 'Sun Jan 17', type: 'Long', title: 'Long Run', km: 15, warmup: 'WU 1k', mainSet: '15 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+        ]
+      },
+      {
+        block: 'B', weekNum: 12, dates: 'Jan 18 – Jan 24 (Time-Trial Week)', totalKm: 47, longKm: 10, longPct: 'n/a', tWork: '18 min T', rWork: '1.6 km R',
+        days: [
+          { dateId: '2027-01-18', day: 'Mon Jan 18', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength A (Light 2 sets)', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2027-01-19', day: 'Tue Jan 19', type: 'Quality', title: 'Threshold (T)', km: 8, warmup: 'WU 2k', mainSet: '3×6 min @ T w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4' },
+          { dateId: '2027-01-20', day: 'Wed Jan 20', type: 'Easy', title: 'E 10 + Strides', km: 10, warmup: 'Mobility', mainSet: '10 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
+          { dateId: '2027-01-21', day: 'Thu Jan 21', type: 'Quality', title: 'Repetition (R)', km: 7, warmup: 'WU 2.5k', mainSet: '4×400m @ R w/ 400m jog (No strength)', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
+          { dateId: '2027-01-22', day: 'Fri Jan 22', type: 'Easy', title: 'Shakeout Run', km: 4, warmup: 'Mobility', mainSet: '4 km Easy + 4 Strides (Early Bed!)', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' },
+          { dateId: '2027-01-23', day: 'Sat Jan 23', type: 'Test', title: '🏆 5K TIME TRIAL', km: 10, warmup: 'WU 15m + 4 ST', mainSet: '5K TIME TRIAL (Target: 21:49 @ 4:22/km)', cooldown: 'CD 1.5k', pace: '4:22/km Target', hrCap: 'Max Effort' },
+          { dateId: '2027-01-24', day: 'Sun Jan 24', type: 'Easy', title: 'Recovery Run', km: 8, warmup: 'Mobility', mainSet: '8 km Very Easy Recovery', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' }
+        ]
+      }
+    ];
+
+    let activeBlockFilter = 'all';
+
+    function loadSavedLog(dateId) {
+      const data = localStorage.getItem(`run_log_${dateId}`);
+      if (!data) return { done: false, actualKm: '', rhr: '', sleep: '', rpe: '' };
+      return JSON.parse(data);
+    }
+
+    function saveLog(dateId, logObj) {
+      localStorage.setItem(`run_log_${dateId}`, JSON.stringify(logObj));
+      evaluateStartGate();
+    }
+
+    function evaluateStartGate() {
+      const badge = document.getElementById('gatekeeperBadge');
+      if (!badge) return;
+      
+      const logs = [loadSavedLog('2026-10-30'), loadSavedLog('2026-10-31'), loadSavedLog('2026-11-01')];
+      const rhrs = logs.map(l => parseFloat(l.rhr)).filter(r => !isNaN(r));
+
+      if (rhrs.length === 3 && rhrs.every(r => r <= 52)) {
+        badge.innerHTML = `<i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i><div><span class="text-gray-400 block text-[9px] uppercase tracking-wider">Start Gate</span><span class="font-mono font-bold text-emerald-400">RHR PASS (${Math.max(...rhrs)} bpm)</span></div>`;
+      } else {
+        badge.innerHTML = `<i data-lucide="shield-alert" class="w-4 h-4 text-amber-400"></i><div><span class="text-gray-400 block text-[9px] uppercase tracking-wider">Start Gate</span><span class="font-mono font-bold text-amber-400">RHR CHECK (≤52)</span></div>`;
+      }
+      lucide.createIcons();
+    }
+
+    function initTodayView() {
+      const todayStr = '2026-10-27'; // Fixed to user's date context
+      document.getElementById('todayDateLabel').innerText = todayStr;
+
+      let todayObj = null;
+      for (const w of scheduleData) {
+        const found = w.days.find(d => d.dateId === todayStr);
+        if (found) { todayObj = found; break; }
+      }
+
+      if (todayObj) {
+        document.getElementById('todayPlannedKm').innerText = `${todayObj.km} km`;
+        document.getElementById('todayWarmup').innerText = todayObj.warmup;
+        document.getElementById('todayMainSet').innerText = todayObj.mainSet;
+        document.getElementById('todayPaceCap').innerText = `${todayObj.pace} | ${todayObj.hrCap}`;
+
+        const log = loadSavedLog(todayStr);
+        document.getElementById('todayDoneCheck').checked = log.done;
+        document.getElementById('todayActualKmInput').value = log.actualKm !== '' ? log.actualKm : todayObj.km;
+        document.getElementById('todayRhrInput').value = log.rhr;
+        document.getElementById('todaySleepInput').value = log.sleep;
+
+        document.getElementById('todayLoggedKm').innerText = `${log.actualKm !== '' ? log.actualKm : 0} km`;
+      }
+    }
+
+    function updateTodayLog() {
+      const todayStr = '2026-10-27';
+      const done = document.getElementById('todayDoneCheck').checked;
+      const actualKm = document.getElementById('todayActualKmInput').value;
+      const rhr = document.getElementById('todayRhrInput').value;
+      const sleep = document.getElementById('todaySleepInput').value;
+
+      saveLog(todayStr, { done, actualKm, rhr, sleep });
+      document.getElementById('todayLoggedKm').innerText = `${actualKm !== '' ? actualKm : 0} km`;
+      renderSchedule();
+    }
+
+    function filterBlock(block) {
+      activeBlockFilter = block;
+      ['all', '0', 'A', 'B'].forEach(b => {
+        const btn = document.getElementById(`btn-block-${b}`);
+        if (btn) btn.className = block === b ? 'px-3 py-1 text-xs rounded-md bg-amber-500 text-gray-950 font-bold' : 'px-3 py-1 text-xs rounded-md bg-gray-800 text-gray-300 hover:bg-gray-700';
+      });
+      renderSchedule();
+    }
+
+    function renderSchedule() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const container = document.getElementById('scheduleContainer');
+      container.innerHTML = '';
+
+      scheduleData.forEach(w => {
+        if (activeBlockFilter !== 'all' && w.block !== activeBlockFilter) return;
+
+        let weekActualTotal = 0;
+        w.days.forEach(d => {
+          const l = loadSavedLog(d.dateId);
+          weekActualTotal += parseFloat(l.actualKm) || 0;
+        });
+
+        const isWeekRed = weekActualTotal > (w.totalKm + 2);
+        const weekCard = document.createElement('div');
+        weekCard.className = `glass-card rounded-xl p-4 sm:p-5 border ${isWeekRed ? 'border-red-500/80 bg-red-950/20' : 'border-gray-800'} space-y-4`;
+
+        weekCard.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-800 pb-3 gap-2">
+            <div class="flex items-center space-x-3">
+              <span class="px-2.5 py-1 rounded text-xs font-mono font-bold border ${w.block === '0' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' : 'bg-amber-500/10 text-amber-400 border-amber-500/30'}">
+                ${w.block === '0' ? 'Week 0 (Live)' : `Block ${w.block} - Week ${w.weekNum}`}
+              </span>
+              <span class="text-sm font-semibold text-white">${w.dates}</span>
+            </div>
+            
+            <div class="flex flex-wrap gap-2 text-[11px]">
+              <span class="bg-gray-900 px-2.5 py-1 rounded border border-gray-800">Planned: <strong class="text-white font-mono">${w.totalKm} km</strong></span>
+              <span class="bg-gray-900 px-2.5 py-1 rounded border border-gray-800">Logged: <strong class="${isWeekRed ? 'text-red-400 font-bold' : 'text-emerald-400'} font-mono">${weekActualTotal.toFixed(1)} km</strong></span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-7 gap-2">
+            ${w.days.map(d => {
+              const log = loadSavedLog(d.dateId);
+              const actualNum = parseFloat(log.actualKm) || 0;
+              const isDayRed = actualNum > (d.km + 1);
+              const isToday = d.dateId === '2026-10-27';
+
+              let tagColor = 'bg-gray-800 text-gray-400';
+              if (d.type === 'Quality') tagColor = 'bg-amber-500/20 text-amber-300 border border-amber-500/40';
+              if (d.type === 'Test') tagColor = 'bg-red-500/30 text-red-200 border border-red-500/50 font-bold';
+
+              return `
+                <div id="card-${d.dateId}" class="p-3 rounded-lg border ${isToday ? 'today-card-active bg-amber-950/30' : isDayRed ? 'bg-red-950/40 border-red-500/60' : 'bg-gray-900/90 border-gray-800'} flex flex-col justify-between space-y-2">
+                  <div>
+                    <div class="flex justify-between items-center mb-1">
+                      <span class="text-[11px] font-bold text-white">${d.day}</span>
+                      <span class="text-[10px] font-mono ${isDayRed ? 'text-red-400 font-bold' : 'text-gray-400'}">${d.km}k</span>
+                    </div>
+                    <p class="text-[11px] leading-tight text-gray-300">${d.mainSet}</p>
+                    <span class="text-[10px] font-mono text-emerald-400 block mt-1">${d.pace}</span>
+                  </div>
+
+                  <div class="pt-2 border-t border-gray-800/60 space-y-1">
+                    <div class="flex items-center justify-between text-[10px]">
+                      <span class="text-gray-400">Act km:</span>
+                      <input type="number" step="0.1" value="${log.actualKm !== '' ? log.actualKm : ''}" onchange="saveDayLog('${d.dateId}', this.value, '${d.km}')" class="w-12 bg-gray-950 border border-gray-800 rounded px-1 py-0.5 text-right font-mono text-white">
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+        container.appendChild(weekCard);
+      });
+
+      lucide.createIcons();
+    }
+
+    function saveDayLog(dateId, val, plannedKm) {
+      const log = loadSavedLog(dateId);
+      log.actualKm = val;
+      saveLog(dateId, log);
+      renderSchedule();
+    }
+
+    function switchTab(tabId) {
+      ['schedule', 'hills', 'paces', 'strength', 'rules'].forEach(id => {
+        document.getElementById(`content-${id}`).classList.toggle('hidden', id !== tabId);
+      });
+      if (tabId === 'hills') setTimeout(initMap, 200);
+    }
+
+    let map, elevationChart;
+
+    function initMap() {
+      if (map) { map.invalidateSize(); return; }
+
+      map = L.map('map').setView([27.6775, 85.2905], 15);
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles &copy; Esri', maxZoom: 19
+      }).addTo(map);
+
+      const latLngs1 = KML_HILL1_COORDS.map(c => [c[0], c[1]]);
+      const latLngs2 = KML_HILL2_COORDS.map(c => [c[0], c[1]]);
+
+      L.polyline(latLngs1, { color: '#ef4444', weight: 4 }).addTo(map);
+      L.polyline(latLngs2, { color: '#3b82f6', weight: 4 }).addTo(map);
+
+      // Amber Pitch Overlay (Points 12 to 14)
+      const pitchCoords = KML_HILL1_COORDS.slice(12, 15).map(c => [c[0], c[1]]);
+      L.polyline(pitchCoords, { color: '#f59e0b', weight: 8, opacity: 0.9 }).addTo(map);
+
+      initElevationChart();
+    }
+
+    function initElevationChart() {
+      const ctx = document.getElementById('elevationChart').getContext('2d');
+      
+      // Calculate cumulative distance in meters
+      let cumDist = 0;
+      const distances = [0];
+      for (let i = 1; i < KML_HILL1_COORDS.length; i++) {
+        const p1 = L.latLng(KML_HILL1_COORDS[i-1][0], KML_HILL1_COORDS[i-1][1]);
+        const p2 = L.latLng(KML_HILL1_COORDS[i][0], KML_HILL1_COORDS[i][1]);
+        cumDist += p1.distanceTo(p2);
+        distances.push(Math.round(cumDist));
+      }
+
+      const elevations = KML_HILL1_COORDS.map(c => c[2]);
+
+      elevationChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: distances,
+          datasets: [{
+            label: 'Elevation (m)',
+            data: elevations,
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.15)',
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { title: { display: true, text: 'Distance (meters)', color: '#9ca3af' }, ticks: { color: '#9ca3af' } },
+            y: { ticks: { color: '#9ca3af' }, min: 1280, max: 1345 }
+          }
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTodayView();
+      renderSchedule();
+      evaluateStartGate();
+      lucide.createIcons();
+
+      // Auto-scroll to today's card on load
+      const todayCard = document.getElementById('card-2026-10-27');
+      if (todayCard) {
+        todayCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    });
+  </script>
+</body>
+</html>
