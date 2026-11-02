@@ -85,7 +85,7 @@
         <div id="gatekeeperBadge" class="glass-card px-3 py-1.5 rounded-lg border flex items-center gap-2">
           <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
           <div>
-            <span class="text-gray-400 block text-[9px] uppercase tracking-wider">Start Gate</span>
+            <span class="text-gray-400 block text-[9px] uppercase tracking-wider">Q1 Gate Nov 14-16</span>
             <span class="font-mono font-bold text-emerald-400">RHR PASS (≤52)</span>
           </div>
         </div>
@@ -120,11 +120,11 @@
         </div>
         <div class="bg-gray-900/90 p-3 rounded-xl border border-amber-500/30 md:col-span-2">
           <span class="text-[10px] font-semibold text-amber-400 uppercase tracking-wider block">Main Set</span>
-          <span id="todayMainSet" class="text-base font-bold text-white">7 km Easy Run (Zone 2)</span>
+          <span id="todayMainSet" class="text-base font-bold text-white">7 km Easy Run</span>
         </div>
         <div class="bg-gray-900/90 p-3 rounded-xl border border-gray-800">
           <span class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider block">Pace & HR Cap</span>
-          <span id="todayPaceCap" class="text-sm font-mono text-emerald-400 font-bold">6:00-6:30/km | HR ≤ 150</span>
+          <span id="todayPaceCap" class="text-sm font-mono text-emerald-400 font-bold">6:00-6:30/km | nasal breathing</span>
         </div>
       </div>
 
@@ -293,7 +293,7 @@
             <div class="p-2.5 rounded bg-gray-900 border border-gray-800 flex justify-between items-center">
               <div>
                 <span class="font-bold text-emerald-400 block">Easy (E)</span>
-                <span class="text-gray-400 text-[11px]">HR ≤ 150 (max 156). >22°C: hold 6:15+</span>
+                <span class="text-gray-400 text-[11px]">No HR target: nasal breathing. >22°C: hold 6:15+</span>
               </div>
               <span class="font-mono font-bold text-gray-200 text-sm">6:00 – 6:30 /km</span>
             </div>
@@ -378,7 +378,7 @@
           </h2>
           <ul class="space-y-3 text-xs text-gray-300">
             <li class="p-3 bg-red-950/20 rounded-lg border border-red-900/40">
-              <strong class="text-white block mb-1">1. Start Gate:</strong> RHR ≤ 52 on 3 consecutive mornings before entering main Block A quality work.
+              <strong class="text-white block mb-1">1. Start Gate:</strong> Block A started Nov 2. First quality (Tue Nov 17) needs RHR ≤ 52 on Nov 14, 15 and 16, heel 0/10 and 7 h sleep; otherwise run it easy.
             </li>
             <li class="p-3 bg-gray-900 rounded-lg border border-gray-800">
               <strong class="text-amber-400 block mb-1">2. Over-distance Cap:</strong> Any day > +1 km planned turns RED. Any week > +2 km total turns RED.
@@ -426,167 +426,180 @@
 
     const scheduleData = [
       {
-        block: '0', weekNum: 0, dates: 'Oct 27 – Nov 1 (Live Week)', totalKm: 42, longKm: 8, longPct: '19%', tWork: 'None', rWork: '5K Race',
+        block: '0', weekNum: 0, dates: 'Oct 26 – Nov 1 (Pre-block)', totalKm: 42, longKm: 9, longPct: '21%', tWork: 'None', rWork: 'None',
         days: [
-          { dateId: '2026-10-27', day: 'Tue Oct 27', type: 'Easy', title: 'Easy Run', km: 7, warmup: 'Dynamic Stretch', mainSet: '7 km Easy Run', cooldown: 'Walk 500m', pace: '6:00-6:30/km', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-10-28', day: 'Wed Oct 28', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Dynamic Stretch', mainSet: '8 km Easy Run', cooldown: 'Walk 500m', pace: '6:00-6:30/km', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-10-29', day: 'Thu Oct 29', type: 'Rest', title: 'Rest Day', km: 0, warmup: 'None', mainSet: 'Full Recovery', cooldown: 'None', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2026-10-30', day: 'Fri Oct 30', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Dynamic Stretch', mainSet: '8 km Easy Run', cooldown: 'Walk 500m', pace: '6:00-6:30/km', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-10-31', day: 'Sat Oct 31', type: 'Quality', title: 'Team 5K Race', km: 9, warmup: 'WU 2 km', mainSet: '5K Race (Untimed effort)', cooldown: 'CD 2 km', pace: 'Race Pace', hrCap: 'Zone 4-5' },
-          { dateId: '2026-11-01', day: 'Sun Nov 1', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Dynamic Stretch', mainSet: '8 km Easy Recovery Run', cooldown: 'Walk 500m', pace: '6:15-6:45/km', hrCap: 'HR ≤ 145' }
+          { dateId: '2026-10-26', day: 'Mon Oct 26', type: 'Rest', title: 'Rest', km: 0, warmup: 'None', mainSet: 'Full rest', cooldown: 'None', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-10-27', day: 'Tue Oct 27', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30/km', hrCap: 'nasal breathing' },
+          { dateId: '2026-10-28', day: 'Wed Oct 28', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30/km', hrCap: 'nasal breathing' },
+          { dateId: '2026-10-29', day: 'Thu Oct 29', type: 'Rest', title: 'Rest Day', km: 0, warmup: 'None', mainSet: 'Full recovery', cooldown: 'None', pace: 'n/a', hrCap: 'n/a' },
+          { dateId: '2026-10-30', day: 'Fri Oct 30', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run (rained out)', cooldown: 'Walk', pace: '6:00-6:30/km', hrCap: 'nasal breathing' },
+          { dateId: '2026-10-31', day: 'Sat Oct 31', type: 'Easy', title: 'Easy Run', km: 9, warmup: 'Mobility', mainSet: '9 km Easy Run (team 5K postponed to Nov 7)', cooldown: 'Walk', pace: '6:00-6:30/km', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-01', day: 'Sun Nov 1', type: 'Easy', title: 'Easy Run', km: 9, warmup: 'Mobility', mainSet: '9 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30/km', hrCap: 'nasal breathing' }
         ]
       },
       {
-        block: 'A', weekNum: 1, dates: 'Nov 2 – Nov 8', totalKm: 40, longKm: 10, longPct: '25%', tWork: 'None', rWork: 'None',
+        block: 'A', weekNum: 1, dates: 'Nov 2 – Nov 8', totalKm: 41, longKm: 10, longPct: '24%', tWork: 'None', rWork: 'None',
         days: [
           { dateId: '2026-11-02', day: 'Mon Nov 2', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2026-11-03', day: 'Tue Nov 3', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'WU 1k', mainSet: 'E 6k + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-04', day: 'Wed Nov 4', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-05', day: 'Thu Nov 5', type: 'Easy', title: 'E 6 + Strength B', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run + Strength B', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-06', day: 'Fri Nov 6', type: 'Easy', title: 'Easy Run', km: 5, warmup: 'Mobility', mainSet: '5 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-07', day: 'Sat Nov 7', type: 'Easy', title: 'E 6 + Strides', km: 6, warmup: 'Mobility', mainSet: '6 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-08', day: 'Sun Nov 8', type: 'Long', title: 'Long Run', km: 10, warmup: 'WU 1k', mainSet: '10 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+          { dateId: '2026-11-03', day: 'Tue Nov 3', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'WU 1k', mainSet: 'E 6k + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-04', day: 'Wed Nov 4', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-05', day: 'Thu Nov 5', type: 'Easy', title: 'E 6 + Strength B', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run + Strength B', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-06', day: 'Fri Nov 6', type: 'Easy', title: 'Easy Run', km: 5, warmup: 'Mobility', mainSet: '5 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-07', day: 'Sat Nov 7', type: 'Easy', title: 'Team 5K', km: 7, warmup: 'Mobility', mainSet: 'Team 5K (postponed from Oct 31): 1 km WU, 5K at the team pace, 1 km CD. No strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-08', day: 'Sun Nov 8', type: 'Long', title: 'Long Run', km: 10, warmup: 'WU 1k', mainSet: '10 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' }
         ]
       },
       {
-        block: 'A', weekNum: 2, dates: 'Nov 9 – Nov 15', totalKm: 44, longKm: 11, longPct: '25%', tWork: 'None', rWork: 'None',
+        block: 'A', weekNum: 2, dates: 'Nov 9 – Nov 15', totalKm: 46, longKm: 11, longPct: '24%', tWork: 'None', rWork: 'None',
         days: [
           { dateId: '2026-11-09', day: 'Mon Nov 9', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2026-11-10', day: 'Tue Nov 10', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'WU 1k', mainSet: 'E 7k + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-11', day: 'Wed Nov 11', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-12', day: 'Thu Nov 12', type: 'Easy', title: 'E 7 + Strength B', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run + Strength B', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-13', day: 'Fri Nov 13', type: 'Easy', title: 'Easy Run', km: 5, warmup: 'Mobility', mainSet: '5 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-14', day: 'Sat Nov 14', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'Mobility', mainSet: '7 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-15', day: 'Sun Nov 15', type: 'Long', title: 'Long Run', km: 11, warmup: 'WU 1k', mainSet: '11 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+          { dateId: '2026-11-10', day: 'Tue Nov 10', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'WU 1k', mainSet: 'E 7k + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-11', day: 'Wed Nov 11', type: 'Easy', title: 'Easy Run', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-12', day: 'Thu Nov 12', type: 'Easy', title: 'E 7 + Strength B', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run + Strength B', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-13', day: 'Fri Nov 13', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-14', day: 'Sat Nov 14', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'Mobility', mainSet: '7 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-15', day: 'Sun Nov 15', type: 'Long', title: 'Long Run', km: 11, warmup: 'WU 1k', mainSet: '11 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' }
         ]
       },
       {
-        block: 'A', weekNum: 3, dates: 'Nov 16 – Nov 22', totalKm: 48, longKm: 12, longPct: '25%', tWork: '18 min at T-10', rWork: 'None',
+        block: 'A', weekNum: 3, dates: 'Nov 16 – Nov 22', totalKm: 50, longKm: 12, longPct: '24%', tWork: '18 min at T-10', rWork: 'None',
         days: [
           { dateId: '2026-11-16', day: 'Mon Nov 16', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2026-11-17', day: 'Tue Nov 17', type: 'Quality', title: 'T-10 Threshold', km: 8, warmup: 'WU 2k', mainSet: '3×6 min @ T-10 (4:58/km) w/ 90s jog', cooldown: 'CD 2k', pace: '4:58/km', hrCap: 'Zone 3' },
-          { dateId: '2026-11-18', day: 'Wed Nov 18', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'Mobility', mainSet: '7 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-19', day: 'Thu Nov 19', type: 'Quality', title: 'Hill Sprints', km: 7, warmup: 'WU 3k', mainSet: '4× Hill Sprints (Hill 1 9.6% Pitch) w/ 90s walk rest', cooldown: 'CD 3k', pace: 'All-out 8-10s', hrCap: 'Max Effort' },
-          { dateId: '2026-11-20', day: 'Fri Nov 20', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-21', day: 'Sat Nov 21', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-22', day: 'Sun Nov 22', type: 'Long', title: 'Long Run', km: 12, warmup: 'WU 1k', mainSet: '12 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+          { dateId: '2026-11-17', day: 'Tue Nov 17', type: 'Quality', title: 'T-10 Threshold', km: 8, warmup: 'WU 2k', mainSet: '3×6 min @ T-10 (4:58/km) w/ 90s jog', cooldown: 'CD 2k', pace: '4:58/km', hrCap: 'by effort' },
+          { dateId: '2026-11-18', day: 'Wed Nov 18', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-19', day: 'Thu Nov 19', type: 'Quality', title: 'Hill Sprints', km: 7, warmup: 'WU 3k', mainSet: '4× Hill Sprints (Hill 1 9.6% Pitch) w/ 90s walk rest', cooldown: 'CD 3k', pace: 'All-out 8-10s', hrCap: 'by effort' },
+          { dateId: '2026-11-20', day: 'Fri Nov 20', type: 'Easy', title: 'Easy Run', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-21', day: 'Sat Nov 21', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-22', day: 'Sun Nov 22', type: 'Long', title: 'Long Run', km: 12, warmup: 'WU 1k', mainSet: '12 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' }
         ]
       },
       {
         block: 'A', weekNum: 4, dates: 'Nov 23 – Nov 29 (Down Week)', totalKm: 40, longKm: 10, longPct: '25%', tWork: 'None', rWork: 'None',
         days: [
           { dateId: '2026-11-23', day: 'Mon Nov 23', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A (2 sets)', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2026-11-24', day: 'Tue Nov 24', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'WU 1k', mainSet: '6 km Easy + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-25', day: 'Wed Nov 25', type: 'Easy', title: 'Easy Run', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-26', day: 'Thu Nov 26', type: 'Quality', title: 'Hill Sprints', km: 6, warmup: 'WU 2.5k', mainSet: '4× Hill Sprints + Strength B (2 sets)', cooldown: 'CD 2.5k', pace: 'All-out', hrCap: 'Max Effort' },
-          { dateId: '2026-11-27', day: 'Fri Nov 27', type: 'Easy', title: 'Easy Run', km: 5, warmup: 'Mobility', mainSet: '5 km Easy Recovery Run', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' },
-          { dateId: '2026-11-28', day: 'Sat Nov 28', type: 'Easy', title: 'E 5 + Strides', km: 5, warmup: 'Mobility', mainSet: '5 km Easy + 4×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-11-29', day: 'Sun Nov 29', type: 'Long', title: 'Long Run', km: 10, warmup: 'WU 1k', mainSet: '10 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+          { dateId: '2026-11-24', day: 'Tue Nov 24', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'WU 1k', mainSet: '6 km Easy + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-25', day: 'Wed Nov 25', type: 'Easy', title: 'Easy Run', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-26', day: 'Thu Nov 26', type: 'Quality', title: 'Hill Sprints', km: 6, warmup: 'WU 2.5k', mainSet: '4× Hill Sprints + Strength B (2 sets)', cooldown: 'CD 2.5k', pace: 'All-out', hrCap: 'by effort' },
+          { dateId: '2026-11-27', day: 'Fri Nov 27', type: 'Easy', title: 'Easy Run', km: 5, warmup: 'Mobility', mainSet: '5 km Easy Recovery Run', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-28', day: 'Sat Nov 28', type: 'Easy', title: 'E 5 + Strides', km: 5, warmup: 'Mobility', mainSet: '5 km Easy + 4×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-29', day: 'Sun Nov 29', type: 'Long', title: 'Long Run', km: 10, warmup: 'WU 1k', mainSet: '10 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' }
         ]
       },
       {
-        block: 'A', weekNum: 5, dates: 'Nov 30 – Dec 6', totalKm: 52, longKm: 13, longPct: '25%', tWork: '24 min at T-10', rWork: 'None',
+        block: 'A', weekNum: 5, dates: 'Nov 30 – Dec 6', totalKm: 55, longKm: 13, longPct: '24%', tWork: '24 min at T-10', rWork: 'None',
         days: [
           { dateId: '2026-11-30', day: 'Mon Nov 30', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2026-12-01', day: 'Tue Dec 1', type: 'Quality', title: 'T-10 Threshold', km: 9, warmup: 'WU 2k', mainSet: '3×8 min @ T-10 (4:58/km) w/ 90s jog', cooldown: 'CD 2k', pace: '4:58/km', hrCap: 'Zone 3' },
-          { dateId: '2026-12-02', day: 'Wed Dec 2', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-03', day: 'Thu Dec 3', type: 'Quality', title: 'Hill Sprints', km: 7, warmup: 'WU 3k', mainSet: '5× Hill Sprints + Strength B', cooldown: 'CD 3k', pace: 'All-out', hrCap: 'Max Effort' },
-          { dateId: '2026-12-04', day: 'Fri Dec 4', type: 'Easy', title: 'Easy Run', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-05', day: 'Sat Dec 5', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'Mobility', mainSet: '7 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-06', day: 'Sun Dec 6', type: 'Long', title: 'Long Run', km: 13, warmup: 'WU 1k', mainSet: '13 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+          { dateId: '2026-12-01', day: 'Tue Dec 1', type: 'Quality', title: 'T-10 Threshold', km: 9, warmup: 'WU 2k', mainSet: '3×8 min @ T-10 (4:58/km) w/ 90s jog', cooldown: 'CD 2k', pace: '4:58/km', hrCap: 'by effort' },
+          { dateId: '2026-12-02', day: 'Wed Dec 2', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-03', day: 'Thu Dec 3', type: 'Quality', title: 'Hill Sprints', km: 7, warmup: 'WU 3k', mainSet: '5× Hill Sprints + Strength B', cooldown: 'CD 3k', pace: 'All-out', hrCap: 'by effort' },
+          { dateId: '2026-12-04', day: 'Fri Dec 4', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-05', day: 'Sat Dec 5', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-06', day: 'Sun Dec 6', type: 'Long', title: 'Long Run', km: 13, warmup: 'WU 1k', mainSet: '13 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' }
         ]
       },
       {
         block: 'A', weekNum: 6, dates: 'Dec 7 – Dec 13 (Test Week)', totalKm: 52, longKm: 12, longPct: '23%', tWork: '30-min Test', rWork: 'None',
         days: [
           { dateId: '2026-12-07', day: 'Mon Dec 7', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2026-12-08', day: 'Tue Dec 8', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'WU 1k', mainSet: '7 km Easy + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-09', day: 'Wed Dec 9', type: 'Long', title: 'Shifted Long Run', km: 12, warmup: 'WU 1k', mainSet: '12 km Long Run (Shifted for Test recovery)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-10', day: 'Thu Dec 10', type: 'Easy', title: 'E 7 + Light Strength', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run + Light Strength B', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-11', day: 'Fri Dec 11', type: 'Easy', title: 'Shakeout Run', km: 5, warmup: 'Mobility', mainSet: '5 km Easy Recovery Run', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' },
-          { dateId: '2026-12-12', day: 'Sat Dec 12', type: 'Test', title: '🔥 30-MIN TEST', km: 12, warmup: 'WU 3k + Strides', mainSet: '30:00 MAX EVEN EFFORT TEST', cooldown: 'CD 2.5k', pace: 'Max Even Pace', hrCap: 'Zone 4-5' },
-          { dateId: '2026-12-13', day: 'Sun Dec 13', type: 'Easy', title: 'Recovery Run', km: 8, warmup: 'Mobility', mainSet: '8 km Very Easy Recovery', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' }
+          { dateId: '2026-12-08', day: 'Tue Dec 8', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'WU 1k', mainSet: '7 km Easy + 6×100m Strides', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-09', day: 'Wed Dec 9', type: 'Long', title: 'Shifted Long Run', km: 12, warmup: 'WU 1k', mainSet: '12 km Long Run (Shifted for Test recovery)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-10', day: 'Thu Dec 10', type: 'Easy', title: 'E 7 + Light Strength', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run + Light Strength B', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-11', day: 'Fri Dec 11', type: 'Easy', title: 'Shakeout Run', km: 5, warmup: 'Mobility', mainSet: '5 km Easy Recovery Run', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-12', day: 'Sat Dec 12', type: 'Test', title: '🔥 30-MIN TEST', km: 12, warmup: 'WU 3k + Strides', mainSet: '30:00 MAX EVEN EFFORT TEST', cooldown: 'CD 2.5k', pace: 'Max Even Pace', hrCap: 'by effort' },
+          { dateId: '2026-12-13', day: 'Sun Dec 13', type: 'Easy', title: 'Recovery Run', km: 8, warmup: 'Mobility', mainSet: '8 km Very Easy Recovery', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'nasal breathing' }
         ]
       },
       {
         block: 'B', weekNum: 7, dates: 'Dec 14 – Dec 20', totalKm: 58, longKm: 14, longPct: '24%', tWork: '24 min T', rWork: '2.4 km R',
         days: [
           { dateId: '2026-12-14', day: 'Mon Dec 14', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A (Block B Heavy)', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2026-12-15', day: 'Tue Dec 15', type: 'Quality', title: 'Threshold (T)', km: 9.5, warmup: 'WU 2k', mainSet: '4×6 min @ T (4:48/km) w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4 (175-185)' },
-          { dateId: '2026-12-16', day: 'Wed Dec 16', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-17', day: 'Thu Dec 17', type: 'Quality', title: 'Repetition (R)', km: 9, warmup: 'WU 2.5k', mainSet: '6×400m @ R (1:35-1:39) w/ 400m jog + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
-          { dateId: '2026-12-18', day: 'Fri Dec 18', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-19', day: 'Sat Dec 19', type: 'Easy', title: 'E 8 + Hill Sprints', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-20', day: 'Sun Dec 20', type: 'Long', title: 'Long Run', km: 14, warmup: 'WU 1k', mainSet: '14 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+          { dateId: '2026-12-15', day: 'Tue Dec 15', type: 'Quality', title: 'Threshold (T)', km: 9.5, warmup: 'WU 2k', mainSet: '4×6 min @ T (4:48/km) w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'by effort' },
+          { dateId: '2026-12-16', day: 'Wed Dec 16', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-17', day: 'Thu Dec 17', type: 'Quality', title: 'Repetition (R)', km: 9, warmup: 'WU 2.5k', mainSet: '6×400m @ R (1:35-1:39) w/ 400m jog + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'by effort' },
+          { dateId: '2026-12-18', day: 'Fri Dec 18', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-19', day: 'Sat Dec 19', type: 'Easy', title: 'E 8 + Hill Sprints', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-20', day: 'Sun Dec 20', type: 'Long', title: 'Long Run', km: 14, warmup: 'WU 1k', mainSet: '14 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' }
         ]
       },
       {
         block: 'B', weekNum: 8, dates: 'Dec 21 – Dec 27', totalKm: 60, longKm: 15, longPct: '25%', tWork: '28 min T', rWork: '2.8 km R',
         days: [
           { dateId: '2026-12-21', day: 'Mon Dec 21', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength A (+ Pogo Hops 2x15)', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2026-12-22', day: 'Tue Dec 22', type: 'Quality', title: 'Threshold (T)', km: 10, warmup: 'WU 2k', mainSet: '4×7 min @ T (4:48/km) w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4' },
-          { dateId: '2026-12-23', day: 'Wed Dec 23', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-24', day: 'Thu Dec 24', type: 'Quality', title: 'Repetition (R)', km: 10, warmup: 'WU 2.5k', mainSet: '7×400m @ R (1:35-1:39) w/ 400m jog + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
-          { dateId: '2026-12-25', day: 'Fri Dec 25', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-26', day: 'Sat Dec 26', type: 'Easy', title: 'E 8 + Hill Sprints', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-27', day: 'Sun Dec 27', type: 'Long', title: 'Long Run', km: 15, warmup: 'WU 1k', mainSet: '15 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+          { dateId: '2026-12-22', day: 'Tue Dec 22', type: 'Quality', title: 'Threshold (T)', km: 10, warmup: 'WU 2k', mainSet: '4×7 min @ T (4:48/km) w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'by effort' },
+          { dateId: '2026-12-23', day: 'Wed Dec 23', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-24', day: 'Thu Dec 24', type: 'Quality', title: 'Repetition (R)', km: 10, warmup: 'WU 2.5k', mainSet: '7×400m @ R (1:35-1:39) w/ 400m jog + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'by effort' },
+          { dateId: '2026-12-25', day: 'Fri Dec 25', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-26', day: 'Sat Dec 26', type: 'Easy', title: 'E 8 + Hill Sprints', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-27', day: 'Sun Dec 27', type: 'Long', title: 'Long Run', km: 15, warmup: 'WU 1k', mainSet: '15 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' }
         ]
       },
       {
         block: 'B', weekNum: 9, dates: 'Dec 28 – Jan 3 (Down Week)', totalKm: 48, longKm: 12, longPct: '25%', tWork: '18 min T', rWork: '2.0 km R',
         days: [
           { dateId: '2026-12-28', day: 'Mon Dec 28', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A (2 sets)', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2026-12-29', day: 'Tue Dec 29', type: 'Quality', title: 'Threshold (T)', km: 8, warmup: 'WU 2k', mainSet: '3×6 min @ T w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4' },
-          { dateId: '2026-12-30', day: 'Wed Dec 30', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2026-12-31', day: 'Thu Dec 31', type: 'Quality', title: 'Repetition (R)', km: 8, warmup: 'WU 2.5k', mainSet: '5×400m @ R w/ 400m jog + Strength B (2 sets)', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
-          { dateId: '2027-01-01', day: 'Fri Jan 1', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Recovery Run', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' },
-          { dateId: '2027-01-02', day: 'Sat Jan 2', type: 'Easy', title: 'E 6 + Hill Sprints', km: 6, warmup: 'Mobility', mainSet: '6 km Easy + 4× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2027-01-03', day: 'Sun Jan 3', type: 'Long', title: 'Long Run', km: 12, warmup: 'WU 1k', mainSet: '12 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+          { dateId: '2026-12-29', day: 'Tue Dec 29', type: 'Quality', title: 'Threshold (T)', km: 8, warmup: 'WU 2k', mainSet: '3×6 min @ T w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'by effort' },
+          { dateId: '2026-12-30', day: 'Wed Dec 30', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-12-31', day: 'Thu Dec 31', type: 'Quality', title: 'Repetition (R)', km: 8, warmup: 'WU 2.5k', mainSet: '5×400m @ R w/ 400m jog + Strength B (2 sets)', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'by effort' },
+          { dateId: '2027-01-01', day: 'Fri Jan 1', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Recovery Run', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'nasal breathing' },
+          { dateId: '2027-01-02', day: 'Sat Jan 2', type: 'Easy', title: 'E 6 + Hill Sprints', km: 6, warmup: 'Mobility', mainSet: '6 km Easy + 4× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2027-01-03', day: 'Sun Jan 3', type: 'Long', title: 'Long Run', km: 12, warmup: 'WU 1k', mainSet: '12 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' }
         ]
       },
       {
         block: 'B', weekNum: 10, dates: 'Jan 4 – Jan 10', totalKm: 60, longKm: 15, longPct: '25%', tWork: '27 min T', rWork: '2.8 km R',
         days: [
           { dateId: '2027-01-04', day: 'Mon Jan 4', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2027-01-05', day: 'Tue Jan 5', type: 'Quality', title: 'Threshold (T)', km: 10, warmup: 'WU 2k', mainSet: '3×9 min @ T w/ 75s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4' },
-          { dateId: '2027-01-06', day: 'Wed Jan 6', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2027-01-07', day: 'Thu Jan 7', type: 'Quality', title: 'Repetition (R)', km: 10, warmup: 'WU 2.5k', mainSet: '7×400m @ R w/ 400m jog + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
-          { dateId: '2027-01-08', day: 'Fri Jan 8', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2027-01-09', day: 'Sat Jan 9', type: 'Easy', title: 'E 8 + Hill Sprints', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2027-01-10', day: 'Sun Jan 10', type: 'Long', title: 'Long Run', km: 15, warmup: 'WU 1k', mainSet: '15 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+          { dateId: '2027-01-05', day: 'Tue Jan 5', type: 'Quality', title: 'Threshold (T)', km: 10, warmup: 'WU 2k', mainSet: '3×9 min @ T w/ 75s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'by effort' },
+          { dateId: '2027-01-06', day: 'Wed Jan 6', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2027-01-07', day: 'Thu Jan 7', type: 'Quality', title: 'Repetition (R)', km: 10, warmup: 'WU 2.5k', mainSet: '7×400m @ R w/ 400m jog + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'by effort' },
+          { dateId: '2027-01-08', day: 'Fri Jan 8', type: 'Easy', title: 'Easy Run', km: 8, warmup: 'Mobility', mainSet: '8 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2027-01-09', day: 'Sat Jan 9', type: 'Easy', title: 'E 8 + Hill Sprints', km: 8, warmup: 'Mobility', mainSet: '8 km Easy + 6× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2027-01-10', day: 'Sun Jan 10', type: 'Long', title: 'Long Run', km: 15, warmup: 'WU 1k', mainSet: '15 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' }
         ]
       },
       {
         block: 'B', weekNum: 11, dates: 'Jan 11 – Jan 17', totalKm: 62, longKm: 15, longPct: '24%', tWork: '28 min T', rWork: '3.0 km R',
         days: [
           { dateId: '2027-01-11', day: 'Mon Jan 11', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2027-01-12', day: 'Tue Jan 12', type: 'Quality', title: 'Threshold (T)', km: 10, warmup: 'WU 2k', mainSet: '2×14 min @ T w/ 90s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4' },
-          { dateId: '2027-01-13', day: 'Wed Jan 13', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2027-01-14', day: 'Thu Jan 14', type: 'Quality', title: 'Repetition (R)', km: 10, warmup: 'WU 2.5k', mainSet: '6×400m @ R + 3×200m @ R + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
-          { dateId: '2027-01-15', day: 'Fri Jan 15', type: 'Easy', title: 'Easy Run', km: 9, warmup: 'Mobility', mainSet: '9 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2027-01-16', day: 'Sat Jan 16', type: 'Easy', title: 'E 9 + Hill Sprints', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 4× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2027-01-17', day: 'Sun Jan 17', type: 'Long', title: 'Long Run', km: 15, warmup: 'WU 1k', mainSet: '15 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'HR ≤ 150' }
+          { dateId: '2027-01-12', day: 'Tue Jan 12', type: 'Quality', title: 'Threshold (T)', km: 10, warmup: 'WU 2k', mainSet: '2×14 min @ T w/ 90s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'by effort' },
+          { dateId: '2027-01-13', day: 'Wed Jan 13', type: 'Easy', title: 'E 9 + Strides', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2027-01-14', day: 'Thu Jan 14', type: 'Quality', title: 'Repetition (R)', km: 10, warmup: 'WU 2.5k', mainSet: '6×400m @ R + 3×200m @ R + Strength B', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'by effort' },
+          { dateId: '2027-01-15', day: 'Fri Jan 15', type: 'Easy', title: 'Easy Run', km: 9, warmup: 'Mobility', mainSet: '9 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2027-01-16', day: 'Sat Jan 16', type: 'Easy', title: 'E 9 + Hill Sprints', km: 9, warmup: 'Mobility', mainSet: '9 km Easy + 4× Hill Sprints', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2027-01-17', day: 'Sun Jan 17', type: 'Long', title: 'Long Run', km: 15, warmup: 'WU 1k', mainSet: '15 km Long Run (E Pace)', cooldown: 'CD 1k', pace: '6:00-6:30', hrCap: 'nasal breathing' }
         ]
       },
       {
         block: 'B', weekNum: 12, dates: 'Jan 18 – Jan 24 (Time-Trial Week)', totalKm: 47, longKm: 10, longPct: 'n/a', tWork: '18 min T', rWork: '1.6 km R',
         days: [
           { dateId: '2027-01-18', day: 'Mon Jan 18', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength A (Light 2 sets)', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
-          { dateId: '2027-01-19', day: 'Tue Jan 19', type: 'Quality', title: 'Threshold (T)', km: 8, warmup: 'WU 2k', mainSet: '3×6 min @ T w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'Zone 4' },
-          { dateId: '2027-01-20', day: 'Wed Jan 20', type: 'Easy', title: 'E 10 + Strides', km: 10, warmup: 'Mobility', mainSet: '10 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'HR ≤ 150' },
-          { dateId: '2027-01-21', day: 'Thu Jan 21', type: 'Quality', title: 'Repetition (R)', km: 7, warmup: 'WU 2.5k', mainSet: '4×400m @ R w/ 400m jog (No strength)', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'Zone 5' },
-          { dateId: '2027-01-22', day: 'Fri Jan 22', type: 'Easy', title: 'Shakeout Run', km: 4, warmup: 'Mobility', mainSet: '4 km Easy + 4 Strides (Early Bed!)', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' },
-          { dateId: '2027-01-23', day: 'Sat Jan 23', type: 'Test', title: '🏆 5K TIME TRIAL', km: 10, warmup: 'WU 15m + 4 ST', mainSet: '5K TIME TRIAL (Target: 21:49 @ 4:22/km)', cooldown: 'CD 1.5k', pace: '4:22/km Target', hrCap: 'Max Effort' },
-          { dateId: '2027-01-24', day: 'Sun Jan 24', type: 'Easy', title: 'Recovery Run', km: 8, warmup: 'Mobility', mainSet: '8 km Very Easy Recovery', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'HR ≤ 145' }
+          { dateId: '2027-01-19', day: 'Tue Jan 19', type: 'Quality', title: 'Threshold (T)', km: 8, warmup: 'WU 2k', mainSet: '3×6 min @ T w/ 60s jog', cooldown: 'CD 2k', pace: '4:48/km', hrCap: 'by effort' },
+          { dateId: '2027-01-20', day: 'Wed Jan 20', type: 'Easy', title: 'E 10 + Strides', km: 10, warmup: 'Mobility', mainSet: '10 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2027-01-21', day: 'Thu Jan 21', type: 'Quality', title: 'Repetition (R)', km: 7, warmup: 'WU 2.5k', mainSet: '4×400m @ R w/ 400m jog (No strength)', cooldown: 'CD 2k', pace: '4:00-4:10/km', hrCap: 'by effort' },
+          { dateId: '2027-01-22', day: 'Fri Jan 22', type: 'Easy', title: 'Shakeout Run', km: 4, warmup: 'Mobility', mainSet: '4 km Easy + 4 Strides (Early Bed!)', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'nasal breathing' },
+          { dateId: '2027-01-23', day: 'Sat Jan 23', type: 'Test', title: '🏆 5K TIME TRIAL', km: 10, warmup: 'WU 15m + 4 ST', mainSet: '5K TIME TRIAL (Target: 21:49 @ 4:22/km)', cooldown: 'CD 1.5k', pace: '4:22/km Target', hrCap: 'by effort' },
+          { dateId: '2027-01-24', day: 'Sun Jan 24', type: 'Easy', title: 'Recovery Run', km: 8, warmup: 'Mobility', mainSet: '8 km Very Easy Recovery', cooldown: 'Walk', pace: '6:15-6:45', hrCap: 'nasal breathing' }
         ]
       }
     ];
 
     let activeBlockFilter = 'all';
 
+    function getTodayStr() {
+      const q = new URLSearchParams(location.search).get('date');
+      if (q && /^\d{4}-\d{2}-\d{2}$/.test(q)) return q;
+      const n = new Date();
+      return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0');
+    }
+    // Actual distances from the .fit files (used until you log your own)
+    const SEEDED_ACTUAL = { '2026-10-27': 7.05, '2026-10-28': 8.33, '2026-10-29': 0, '2026-10-30': 0, '2026-10-31': 9.2, '2026-11-01': 9.21 };
+
     function loadSavedLog(dateId) {
       const data = localStorage.getItem(`run_log_${dateId}`);
-      if (!data) return { done: false, actualKm: '', rhr: '', sleep: '', rpe: '' };
+      if (!data) {
+        if (SEEDED_ACTUAL[dateId] !== undefined) return { done: true, actualKm: String(SEEDED_ACTUAL[dateId]), rhr: '', sleep: '', rpe: '' };
+        return { done: false, actualKm: '', rhr: '', sleep: '', rpe: '' };
+      }
       return JSON.parse(data);
     }
 
@@ -599,20 +612,21 @@
       const badge = document.getElementById('gatekeeperBadge');
       if (!badge) return;
       
-      const logs = [loadSavedLog('2026-10-30'), loadSavedLog('2026-10-31'), loadSavedLog('2026-11-01')];
+      const logs = [loadSavedLog('2026-11-14'), loadSavedLog('2026-11-15'), loadSavedLog('2026-11-16')];
       const rhrs = logs.map(l => parseFloat(l.rhr)).filter(r => !isNaN(r));
 
       if (rhrs.length === 3 && rhrs.every(r => r <= 52)) {
-        badge.innerHTML = `<i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i><div><span class="text-gray-400 block text-[9px] uppercase tracking-wider">Start Gate</span><span class="font-mono font-bold text-emerald-400">RHR PASS (${Math.max(...rhrs)} bpm)</span></div>`;
+        badge.innerHTML = `<i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i><div><span class="text-gray-400 block text-[9px] uppercase tracking-wider">Q1 Gate Nov 14-16</span><span class="font-mono font-bold text-emerald-400">RHR PASS (${Math.max(...rhrs)} bpm)</span></div>`;
       } else {
-        badge.innerHTML = `<i data-lucide="shield-alert" class="w-4 h-4 text-amber-400"></i><div><span class="text-gray-400 block text-[9px] uppercase tracking-wider">Start Gate</span><span class="font-mono font-bold text-amber-400">RHR CHECK (≤52)</span></div>`;
+        badge.innerHTML = `<i data-lucide="shield-alert" class="w-4 h-4 text-amber-400"></i><div><span class="text-gray-400 block text-[9px] uppercase tracking-wider">Q1 Gate Nov 14-16</span><span class="font-mono font-bold text-amber-400">RHR PENDING (≤52)</span></div>`;
       }
       lucide.createIcons();
     }
 
     function initTodayView() {
-      const todayStr = '2026-10-27'; // Fixed to user's date context
-      document.getElementById('todayDateLabel').innerText = todayStr;
+      const todayStr = getTodayStr();
+      const dl = new Date(todayStr + 'T12:00:00');
+      document.getElementById('todayDateLabel').innerText = dl.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
 
       let todayObj = null;
       for (const w of scheduleData) {
@@ -633,11 +647,16 @@
         document.getElementById('todaySleepInput').value = log.sleep;
 
         document.getElementById('todayLoggedKm').innerText = `${log.actualKm !== '' ? log.actualKm : 0} km`;
+      } else {
+        document.getElementById('todayPlannedKm').innerText = '0 km';
+        document.getElementById('todayWarmup').innerText = '-';
+        document.getElementById('todayMainSet').innerText = 'No session scheduled for this date';
+        document.getElementById('todayPaceCap').innerText = 'Plan runs Oct 26 2026 to Jan 24 2027';
       }
     }
 
     function updateTodayLog() {
-      const todayStr = '2026-10-27';
+      const todayStr = getTodayStr();
       const done = document.getElementById('todayDoneCheck').checked;
       const actualKm = document.getElementById('todayActualKmInput').value;
       const rhr = document.getElementById('todayRhrInput').value;
@@ -690,12 +709,12 @@
             </div>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-7 gap-2">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7 gap-2">
             ${w.days.map(d => {
               const log = loadSavedLog(d.dateId);
               const actualNum = parseFloat(log.actualKm) || 0;
               const isDayRed = actualNum > (d.km + 1);
-              const isToday = d.dateId === '2026-10-27';
+              const isToday = d.dateId === getTodayStr();
 
               let tagColor = 'bg-gray-800 text-gray-400';
               if (d.type === 'Quality') tagColor = 'bg-amber-500/20 text-amber-300 border border-amber-500/40';
@@ -705,11 +724,11 @@
                 <div id="card-${d.dateId}" class="p-3 rounded-lg border ${isToday ? 'today-card-active bg-amber-950/30' : isDayRed ? 'bg-red-950/40 border-red-500/60' : 'bg-gray-900/90 border-gray-800'} flex flex-col justify-between space-y-2">
                   <div>
                     <div class="flex justify-between items-center mb-1">
-                      <span class="text-[11px] font-bold text-white">${d.day}</span>
+                      <span class="text-sm font-bold text-white">${d.day}</span>
                       <span class="text-[10px] font-mono ${isDayRed ? 'text-red-400 font-bold' : 'text-gray-400'}">${d.km}k</span>
                     </div>
-                    <p class="text-[11px] leading-tight text-gray-300">${d.mainSet}</p>
-                    <span class="text-[10px] font-mono text-emerald-400 block mt-1">${d.pace}</span>
+                    <p class="text-sm leading-snug text-gray-200">${d.mainSet}</p>
+                    <span class="text-xs font-mono text-emerald-400 block mt-1">${d.pace}</span>
                   </div>
 
                   <div class="pt-2 border-t border-gray-800/60 space-y-1">
@@ -812,8 +831,10 @@
       evaluateStartGate();
       lucide.createIcons();
 
+      let shownDay = getTodayStr();
+      setInterval(() => { if (getTodayStr() !== shownDay) location.reload(); }, 60000);
       // Auto-scroll to today's card on load
-      const todayCard = document.getElementById('card-2026-10-27');
+      const todayCard = document.getElementById('card-' + getTodayStr());
       if (todayCard) {
         todayCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
