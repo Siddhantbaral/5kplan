@@ -52,8 +52,8 @@
 <body class="min-h-screen pb-12">
 
   <!-- Header Banner -->
-  <header class="border-b border-gray-800 bg-gray-900/80 sticky top-0 z-50 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+  <header class="border-b border-gray-800 bg-gray-900/80 md:sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
       <div class="flex items-center space-x-3">
         <div class="bg-gradient-to-tr from-amber-500 to-red-600 p-2 rounded-xl shadow-lg shadow-amber-500/20">
           <i data-lucide="activity" class="w-6 h-6 text-white"></i>
@@ -63,11 +63,11 @@
             Sub-20 5K Daily Plan
             <span class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20">VDOT 43 → 45</span>
           </h1>
-          <p class="text-xs text-gray-400">Athlete: <span class="text-gray-200 font-medium">Siddhant Baral</span> | Oct 27, 2026 – Jan 24, 2027</p>
+          <p class="text-xs text-gray-400">Athlete: <span class="text-gray-200 font-medium">Siddhant Baral</span> | Oct 26 2026 – Jan 24 2027 | Target 21:49, TT Sat Jan 23</p>
         </div>
       </div>
 
-      <div class="flex flex-wrap items-center gap-2 text-xs">
+      <div class="hidden md:flex flex-wrap items-center gap-2 text-xs">
         <div class="glass-card px-3 py-1.5 rounded-lg border flex items-center gap-2">
           <i data-lucide="target" class="w-4 h-4 text-emerald-400"></i>
           <div>
@@ -93,17 +93,17 @@
     </div>
   </header>
 
-  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 space-y-6">
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-3 space-y-4">
 
     <!-- PRE-DAWN MOBILE "TODAY" VIEW BANNER -->
-    <section id="todayBanner" class="glass-card p-5 rounded-2xl border-2 border-amber-500/40 bg-gradient-to-r from-amber-950/30 via-gray-900 to-gray-900 space-y-4">
+    <section id="todayBanner" class="glass-card p-3 sm:p-5 rounded-2xl border-2 border-amber-500/40 bg-gradient-to-r from-amber-950/30 via-gray-900 to-gray-900 space-y-3">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-800 pb-3">
         <div class="flex items-center space-x-2">
           <span class="relative flex h-3 w-3">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span>
           </span>
-          <h2 class="text-base font-bold text-amber-400 tracking-wide uppercase">Today's Pre-Dawn Session</h2>
+          <h2 class="text-base font-bold text-amber-400 tracking-wide uppercase">Session</h2>
           <span id="todayDateLabel" class="text-xs font-mono text-gray-400"></span>
         </div>
         <div class="flex items-center space-x-3 text-xs font-mono">
@@ -115,7 +115,7 @@
       <!-- Workout Breakdown Cards -->
       <div id="todayWorkoutDetails" class="grid grid-cols-1 md:grid-cols-4 gap-3">
         <div class="bg-gray-900/90 p-3 rounded-xl border border-gray-800">
-          <span class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider block">Warm-Up</span>
+          <span class="text-[10px] font-semibold text-gray-500 uppercase tracking-wider block">Warm-up → Cool-down</span>
           <span id="todayWarmup" class="text-sm font-medium text-gray-200">Dynamic Mobility & Drills</span>
         </div>
         <div class="bg-gray-900/90 p-3 rounded-xl border border-amber-500/30 md:col-span-2">
@@ -145,13 +145,22 @@
           </div>
           <div class="flex items-center space-x-1">
             <span class="text-gray-400">Sleep:</span>
-            <input type="number" id="todaySleepInput" onchange="updateTodayLog()" placeholder="hrs" step="0.5" class="w-14 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs text-white text-center font-mono focus:border-amber-500">
+            <input type="number" id="todaySleepH" min="0" max="14" onchange="updateTodayLog()" placeholder="h" class="w-12 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs text-white text-center font-mono focus:border-amber-500">
+            <span class="text-gray-500">h</span>
+            <input type="number" id="todaySleepM" min="0" max="59" onchange="updateTodayLog()" placeholder="min" class="w-12 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs text-white text-center font-mono focus:border-amber-500">
+            <span class="text-gray-500">min</span>
+          </div>
+          <div class="flex items-center space-x-1">
+            <span class="text-gray-400">RPE:</span>
+            <input type="number" id="todayRpeInput" min="1" max="10" onchange="updateTodayLog()" placeholder="1-10" class="w-12 bg-gray-900 border border-gray-700 rounded px-2 py-1 text-xs text-white text-center font-mono focus:border-amber-500">
           </div>
         </div>
         <div id="todayStatusAlert" class="text-xs font-mono font-medium text-amber-400">
           Ready for pre-dawn execution.
         </div>
       </div>
+      <div id="weekStrip"></div>
+      <div id="gateMini" class="md:hidden text-[11px] font-mono text-gray-400"></div>
     </section>
 
     <!-- Navigation Tabs -->
@@ -450,12 +459,12 @@
         ]
       },
       {
-        block: 'A', weekNum: 2, dates: 'Nov 9 – Nov 15', totalKm: 46, longKm: 11, longPct: '24%', tWork: 'None', rWork: 'None',
+        block: 'A', weekNum: 2, dates: 'Nov 9 – Nov 15 (hill sprints start)', totalKm: 46, longKm: 11, longPct: '24%', tWork: 'None', rWork: 'None',
         days: [
           { dateId: '2026-11-09', day: 'Mon Nov 9', type: 'Rest', title: 'Rest. Strength A', km: 0, warmup: 'Mobility', mainSet: 'Rest + Strength Session A', cooldown: 'Stretch', pace: 'n/a', hrCap: 'n/a' },
           { dateId: '2026-11-10', day: 'Tue Nov 10', type: 'Easy', title: 'E 8 + Strides', km: 8, warmup: 'Mobility', mainSet: '8 km easy total, incl. 6×100m strides (after a 2 km warm-up on flat, or at the end)', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
           { dateId: '2026-11-11', day: 'Wed Nov 11', type: 'Easy', title: 'Easy Run', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
-          { dateId: '2026-11-12', day: 'Thu Nov 12', type: 'Easy', title: 'E 7 + Strength B', km: 7, warmup: 'Mobility', mainSet: '7 km Easy Run + Strength B', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
+          { dateId: '2026-11-12', day: 'Thu Nov 12', type: 'Quality', title: 'Hill Sprints', km: 7, warmup: 'WU 3k', mainSet: '4× Hill Sprints (Hill 1 pitch), first rep 80%, 90s walk rest. Only if RHR ≤ 52 and sleep ≥ 7 h, else run easy. Then Strength B', cooldown: 'CD 3k', pace: 'All-out 8-10s', hrCap: 'by effort' },
           { dateId: '2026-11-13', day: 'Fri Nov 13', type: 'Easy', title: 'Easy Run', km: 6, warmup: 'Mobility', mainSet: '6 km Easy Run', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
           { dateId: '2026-11-14', day: 'Sat Nov 14', type: 'Easy', title: 'E 7 + Strides', km: 7, warmup: 'Mobility', mainSet: '7 km Easy + 6×100m Strides', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' },
           { dateId: '2026-11-15', day: 'Sun Nov 15', type: 'Long', title: 'Long Run', km: 11, warmup: 'Mobility', mainSet: '11 km Long Run (E Pace)', cooldown: 'Walk', pace: '6:00-6:30', hrCap: 'nasal breathing' }
@@ -591,13 +600,38 @@
       const n = new Date();
       return n.getFullYear() + '-' + String(n.getMonth() + 1).padStart(2, '0') + '-' + String(n.getDate()).padStart(2, '0');
     }
-    // Actual distances from the .fit files (used until you log your own)
-    const SEEDED_ACTUAL = { '2026-10-27': 7.05, '2026-10-28': 8.33, '2026-10-29': 0, '2026-10-30': 0, '2026-10-31': 9.2, '2026-11-01': 9.21 };
+    // Logged data so far: distances from the .fit files, RHR and sleep as you reported them. Blank = not reported.
+    const SEEDED_LOG = {
+      '2026-10-26': { done: true,  actualKm: '0',    rhr: '56', sleep: '' },
+      '2026-10-27': { done: true,  actualKm: '7.05', rhr: '53', sleep: '7:41' },
+      '2026-10-28': { done: true,  actualKm: '8.33', rhr: '53', sleep: '6:02' },
+      '2026-10-29': { done: true,  actualKm: '0',    rhr: '',   sleep: '' },
+      '2026-10-30': { done: false, actualKm: '0',    rhr: '',   sleep: '' },
+      '2026-10-31': { done: true,  actualKm: '9.2',  rhr: '47', sleep: '' },
+      '2026-11-01': { done: true,  actualKm: '9.21', rhr: '53', sleep: '6:00' },
+      '2026-11-02': { done: true,  actualKm: '0',    rhr: '47', sleep: '' },
+      '2026-11-03': { done: true,  actualKm: '7.06', rhr: '48', sleep: '6:43' },
+      '2026-11-04': { done: true,  actualKm: '6.19', rhr: '49', sleep: '7:45' },
+      '2026-11-05': { done: true,  actualKm: '6.06', rhr: '47', sleep: '4:18' },
+      '2026-11-06': { done: true,  actualKm: '5.03', rhr: '47', sleep: '7:17' }
+    };
+    // Sleep is stored as "H:MM". Old decimal values (e.g. 7.5) are converted.
+    function parseSleep(v) {
+      if (v === undefined || v === null || v === '') return { h: '', m: '' };
+      const t = String(v);
+      if (t.includes(':')) { const [h, m] = t.split(':'); return { h: String(parseInt(h) || 0), m: String(parseInt(m) || 0) }; }
+      const x = parseFloat(t); if (isNaN(x)) return { h: '', m: '' };
+      return { h: String(Math.floor(x)), m: String(Math.round((x - Math.floor(x)) * 60)) };
+    }
+    function fmtSleep(v) { const p = parseSleep(v); return p.h === '' ? '–' : `${p.h}h${String(p.m).padStart(2, '0')}`; }
+    let viewDate = null;
+    function currentViewStr() { return viewDate || getTodayStr(); }
+    function selectDay(d) { viewDate = (d === getTodayStr()) ? null : d; initTodayView(); }
 
     function loadSavedLog(dateId) {
       const data = localStorage.getItem(`run_log_${dateId}`);
       if (!data) {
-        if (SEEDED_ACTUAL[dateId] !== undefined) return { done: true, actualKm: String(SEEDED_ACTUAL[dateId]), rhr: '', sleep: '', rpe: '' };
+        if (SEEDED_LOG[dateId]) return Object.assign({ rpe: '' }, SEEDED_LOG[dateId]);
         return { done: false, actualKm: '', rhr: '', sleep: '', rpe: '' };
       }
       return JSON.parse(data);
@@ -620,32 +654,60 @@
       } else {
         badge.innerHTML = `<i data-lucide="shield-alert" class="w-4 h-4 text-amber-400"></i><div><span class="text-gray-400 block text-[9px] uppercase tracking-wider">Q1 Gate Nov 14-16</span><span class="font-mono font-bold text-amber-400">RHR PENDING (≤52)</span></div>`;
       }
+      const gm = document.getElementById('gateMini'); if (gm) gm.innerText = 'Q1 gate Nov 14-16 (RHR ≤ 52 x3): ' + (rhrs.length === 3 && rhrs.every(r => r <= 52) ? 'PASS' : 'pending');
       lucide.createIcons();
+    }
+
+    function renderWeekStrip(viewStr, todayStr) {
+      const el = document.getElementById('weekStrip');
+      if (!el) return;
+      const w = scheduleData.find(x => x.days.some(d => d.dateId === viewStr));
+      if (!w) { el.innerHTML = ''; return; }
+      let act = 0;
+      w.days.forEach(d => { act += parseFloat(loadSavedLog(d.dateId).actualKm) || 0; });
+      const chips = w.days.map(d => {
+        const l = loadSavedLog(d.dateId);
+        const a = parseFloat(l.actualKm);
+        const dn = new Date(d.dateId + 'T12:00:00');
+        const wd = dn.toLocaleDateString('en-GB', { weekday: 'short' });
+        const isToday = d.dateId === todayStr, isSel = d.dateId === viewStr;
+        const border = isSel ? 'border-amber-400 bg-amber-500/10' : (isToday ? 'border-amber-700' : 'border-gray-800');
+        const over = !isNaN(a) && a > d.km + 1 ? 'text-red-400' : 'text-emerald-400';
+        return `<button onclick="selectDay('${d.dateId}')" class="rounded-lg border ${border} bg-gray-900/70 px-1 py-1.5 text-center min-w-0">
+          <span class="block text-[10px] text-gray-400">${wd} ${dn.getDate()}</span>
+          <span class="block text-xs font-mono font-bold text-white">${d.km}</span>
+          <span class="block text-[10px] font-mono ${over}">${!isNaN(a) && l.actualKm !== '' ? a : '·'}</span>
+        </button>`;
+      }).join('');
+      el.innerHTML = `<div class="flex justify-between text-[11px] font-mono text-gray-400 mb-1"><span>THIS WEEK (planned / actual km)</span><span>${act.toFixed(1)} of ${w.totalKm} km</span></div><div class="grid grid-cols-7 gap-1">${chips}</div>`;
     }
 
     function initTodayView() {
       const todayStr = getTodayStr();
-      const dl = new Date(todayStr + 'T12:00:00');
-      document.getElementById('todayDateLabel').innerText = dl.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' });
+      const viewStr = currentViewStr();
+      const dl = new Date(viewStr + 'T12:00:00');
+      document.getElementById('todayDateLabel').innerText = dl.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' }) + (viewStr !== todayStr ? '  (viewing, tap today to return)' : '  (today)');
 
       let todayObj = null;
       for (const w of scheduleData) {
-        const found = w.days.find(d => d.dateId === todayStr);
+        const found = w.days.find(d => d.dateId === viewStr);
         if (found) { todayObj = found; break; }
       }
 
       if (todayObj) {
         document.getElementById('todayPlannedKm').innerText = `${todayObj.km} km`;
-        document.getElementById('todayWarmup').innerText = todayObj.warmup;
+        document.getElementById('todayWarmup').innerText = todayObj.warmup + ' → ' + todayObj.cooldown;
         document.getElementById('todayMainSet').innerText = todayObj.mainSet;
         document.getElementById('todayPaceCap').innerText = `${todayObj.pace} | ${todayObj.hrCap}`;
 
-        const log = loadSavedLog(todayStr);
+        const log = loadSavedLog(viewStr);
         document.getElementById('todayDoneCheck').checked = log.done;
-        document.getElementById('todayActualKmInput').value = log.actualKm !== '' ? log.actualKm : todayObj.km;
+        document.getElementById('todayActualKmInput').value = log.actualKm;
         document.getElementById('todayRhrInput').value = log.rhr;
-        document.getElementById('todaySleepInput').value = log.sleep;
-
+        const sl = parseSleep(log.sleep);
+        document.getElementById('todaySleepH').value = sl.h;
+        document.getElementById('todaySleepM').value = sl.m;
+        document.getElementById('todayRpeInput').value = log.rpe || '';
         document.getElementById('todayLoggedKm').innerText = `${log.actualKm !== '' ? log.actualKm : 0} km`;
       } else {
         document.getElementById('todayPlannedKm').innerText = '0 km';
@@ -653,17 +715,21 @@
         document.getElementById('todayMainSet').innerText = 'No session scheduled for this date';
         document.getElementById('todayPaceCap').innerText = 'Plan runs Oct 26 2026 to Jan 24 2027';
       }
+      renderWeekStrip(viewStr, todayStr);
     }
 
     function updateTodayLog() {
-      const todayStr = getTodayStr();
+      const viewStr = currentViewStr();
       const done = document.getElementById('todayDoneCheck').checked;
       const actualKm = document.getElementById('todayActualKmInput').value;
       const rhr = document.getElementById('todayRhrInput').value;
-      const sleep = document.getElementById('todaySleepInput').value;
+      const h = document.getElementById('todaySleepH').value, m = document.getElementById('todaySleepM').value;
+      const sleep = (h !== '' || m !== '') ? `${parseInt(h) || 0}:${String(parseInt(m) || 0).padStart(2, '0')}` : '';
+      const rpe = document.getElementById('todayRpeInput').value;
 
-      saveLog(todayStr, { done, actualKm, rhr, sleep });
+      saveLog(viewStr, { done, actualKm, rhr, sleep, rpe });
       document.getElementById('todayLoggedKm').innerText = `${actualKm !== '' ? actualKm : 0} km`;
+      renderWeekStrip(viewStr, getTodayStr());
       renderSchedule();
     }
 
@@ -833,11 +899,6 @@
 
       let shownDay = getTodayStr();
       setInterval(() => { if (getTodayStr() !== shownDay) location.reload(); }, 60000);
-      // Auto-scroll to today's card on load
-      const todayCard = document.getElementById('card-' + getTodayStr());
-      if (todayCard) {
-        todayCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
     });
   </script>
 </body>
